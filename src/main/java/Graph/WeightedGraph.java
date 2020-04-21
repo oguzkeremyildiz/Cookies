@@ -12,8 +12,13 @@ public class WeightedGraph<Symbol> {
     private HashSet<Symbol> vertexList;
 
     public WeightedGraph(){
-        edgeList = new HashMap<Symbol, LinkedList<Pair<Symbol, Integer>>>();
-        vertexList = new HashSet<Symbol>();
+        edgeList = new HashMap<>();
+        vertexList = new HashSet<>();
+    }
+
+    public WeightedGraph(HashSet<Symbol> vertexList) {
+        edgeList = new HashMap<>();
+        this.vertexList = vertexList;
     }
 
     public void clear() {
@@ -37,10 +42,10 @@ public class WeightedGraph<Symbol> {
         vertexList.add(from);
         vertexList.add(to);
         if (!edgeList.containsKey(from)){
-            edgeList.put(from, new LinkedList<Pair<Symbol, Integer>>());
-            edgeList.get(from).addFirst(new Pair<Symbol, Integer>(to, length));
+            edgeList.put(from, new LinkedList<>());
+            edgeList.get(from).addFirst(new Pair<>(to, length));
         } else {
-            edgeList.get(from).add(new Pair<Symbol, Integer>(to, length));
+            edgeList.get(from).add(new Pair<>(to, length));
         }
     }
 
