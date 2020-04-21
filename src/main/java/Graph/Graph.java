@@ -6,6 +6,10 @@ public class Graph<Symbol> {
     private HashSet<Symbol> vertexList;
     private HashMap<Symbol, LinkedList<Symbol>> edgeList;
 
+    /**
+     * A constructor of {@link Graph} class which Initialized new {@link java.util.HashMap} and {@link java.util.HashSet}
+     */
+
     public Graph(){
         edgeList = new HashMap<Symbol, LinkedList<Symbol>>();
         vertexList = new HashSet<Symbol>();
@@ -16,14 +20,30 @@ public class Graph<Symbol> {
         this.vertexList = vertexList;
     }
 
+    /**
+     * A containsKey method which is the same as {@link java.util.HashMap}'s.
+     * @param element Symbol input.
+     * @return is control {@link java.util.HashMap} for contains key.
+     */
+
     public boolean containsKey(Symbol element) {
         return edgeList.containsKey(element);
     }
+
+    /**
+     * A containsValue method which is the same as {@link java.util.HashMap}'s.
+     * @param list {@link java.util.LinkedList} input.
+     * @return is control {@link java.util.HashMap} for contains value.
+     */
 
     public boolean containsValue(LinkedList<Symbol> list) {
         return edgeList.containsValue(list);
     }
 
+    /**
+     *  A isEmpty method which is the same as {@link java.util.HashMap}'s.
+     * @return control are there any element in {@link Graph}
+     */
     public boolean isEmpty() {
         return edgeList.isEmpty();
     }
@@ -33,7 +53,13 @@ public class Graph<Symbol> {
     }
 
     public void put(Symbol index, LinkedList<Symbol> list) {
+        vertexList.add(index);
         edgeList.put(index, list);
+        if (list.size() > 0) {
+            for (Symbol element : list) {
+                vertexList.add(element);
+            }
+        }
     }
 
     public LinkedList<Symbol> get(Symbol index) {
