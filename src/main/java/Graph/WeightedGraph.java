@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+/**
+ * @author oguzkeremyildiz
+ *
+ */
+
 public class WeightedGraph<Symbol> {
     private HashMap<Symbol, LinkedList<Pair<Symbol, Integer>>> edgeList;
     private HashSet<Symbol> vertexList;

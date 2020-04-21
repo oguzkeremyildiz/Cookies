@@ -1,5 +1,10 @@
 package Util;
 
+/**
+ * @author olcaytaner
+ *
+ */
+
 public class Permutation {
 
     private int[] a;

@@ -1,5 +1,10 @@
 package Tuples;/* Created by oguzkeremyildiz on 17.04.2020 */
 
+/**
+ * @author oguzkeremyildiz
+ *
+ */
+
 public class Pair<K, V> {
     K key;
     V value;

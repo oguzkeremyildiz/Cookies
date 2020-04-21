@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+/**
+ * @author oguzkeremyildiz
+ *
+ */
+
 public class QuickSort<Symbol>  {
     private Comparator<Symbol> comparator;
     public QuickSort(Comparator<Symbol> comparator) {

@@ -1,5 +1,10 @@
 package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
+/**
+ * @author oguzkeremyildiz
+ *
+ */
+
 public class Triplet<A, B, C> {
     A a;
     B b;

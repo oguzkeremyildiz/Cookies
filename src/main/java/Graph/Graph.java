@@ -2,6 +2,11 @@ package Graph;/* Created by oguzkeremyildiz on 11.04.2020 */
 
 import java.util.*;
 
+/**
+ * @author oguzkeremyildiz
+ *
+ */
+
 public class Graph<Symbol> {
     private HashSet<Symbol> vertexList;
     private HashMap<Symbol, LinkedList<Symbol>> edgeList;
