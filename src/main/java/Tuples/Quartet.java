@@ -34,7 +34,7 @@ public class Quartet<A, B, C, D> {
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof Quartet)) {
             return false;
         }
         Quartet<A, B, C, D> quartet = (Quartet<A, B, C, D>) o;

@@ -39,7 +39,7 @@ public class Quintet<A, B, C, D, E> {
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof Quintet)) {
             return false;
         }
         Quintet<A, B, C, D, E> quintet = (Quintet<A, B, C, D, E>) o;

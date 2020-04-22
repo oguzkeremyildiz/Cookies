@@ -29,7 +29,7 @@ public class Triplet<A, B, C> {
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof Triplet)) {
             return false;
         }
         Triplet<A, B, C> triplet = (Triplet<A, B, C>) o;

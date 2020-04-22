@@ -19,7 +19,7 @@ public class Unit<A> {
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof Unit)) {
             return false;
         }
         Unit<A> unit = (Unit<A>) o;

@@ -44,7 +44,7 @@ public class Sextet<A, B, C, D, E, F> {
     }
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
+        if (!(o instanceof Sextet)) {
             return false;
         }
         Sextet<A, B, C, D, E, F> sextet = (Sextet<A, B, C, D, E, F>) o;
