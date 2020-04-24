@@ -127,6 +127,21 @@ public class Graph<Symbol> {
     }
 
     /**
+     * A replace method puts another {@link java.util.LinkedList} in key.
+     * @param key Symbol input.
+     * @param value {@link java.util.LinkedList} input.
+     */
+
+    public void replace(Symbol key, LinkedList<Symbol> value) {
+        edgeList.replace(key, value);
+        if (value.size() > 0) {
+            for (Symbol element : value) {
+                vertexList.add(element);
+            }
+        }
+    }
+
+    /**
      * A getKeySet get all {@link Graph}'s vertex.
      * @return edgeList's keySet.
      */

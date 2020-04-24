@@ -77,6 +77,15 @@ public class WeightedGraph<Symbol> {
         }
     }
 
+    public void replace(Symbol key, LinkedList<Pair<Symbol, Integer>> value) {
+        edgeList.replace(key, value);
+        if (value.size() > 0) {
+            for (Pair<Symbol, Integer> element : value) {
+                vertexList.add(element.getKey());
+            }
+        }
+    }
+
     public LinkedList<Pair<Symbol, Integer>> get(Symbol index) {
         return edgeList.get(index);
     }
