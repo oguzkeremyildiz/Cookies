@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- *
+ * @version 1.1.0
  */
 
 public class Graph<Symbol> {

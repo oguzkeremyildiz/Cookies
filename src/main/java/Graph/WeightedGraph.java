@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * @author oguzkeremyildiz
- *
+ * @version 1.1.0
  */
 
 public class WeightedGraph<Symbol> {

@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- *
+ * @version 1.1.0
  */
 
 public class Quartet<A, B, C, D> {
