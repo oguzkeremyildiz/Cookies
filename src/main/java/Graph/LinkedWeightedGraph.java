@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class LinkedWeightedGraph<Symbol> {
@@ -21,6 +21,11 @@ public class LinkedWeightedGraph<Symbol> {
     public LinkedWeightedGraph(LinkedHashSet<Symbol> vertexList) {
         edgeList = new LinkedHashMap<>();
         this.vertexList = vertexList;
+    }
+
+    public void clear() {
+        edgeList.clear();
+        vertexList.clear();
     }
 
     public LinkedList<Pair<Symbol, Integer>> getFirst() {
