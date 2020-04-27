@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 22.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.0
+ * @version 1.0.1
  */
 
 public class Octet<A, B, C, D, E, F, G, H> {
@@ -59,5 +59,9 @@ public class Octet<A, B, C, D, E, F, G, H> {
         }
         Octet<A, B, C, D, E, F, G, H> octet = (Octet<A, B, C, D, E, F, G, H>) o;
         return this.a.equals(octet.getA()) && this.b.equals(octet.getB()) && this.c.equals(octet.getC()) && this.d.equals(octet.getD()) && this.e.equals(octet.getE()) && this.f.equals(octet.getF()) && this.g.equals(octet.getG()) && this.h.equals(octet.getH());
+    }
+    @Override
+    public String toString() {
+        return a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString() + ", " + f.toString() + ", " + g.toString() + ", " + h.toString();
     }
 }

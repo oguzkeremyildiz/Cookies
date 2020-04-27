@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.0
+ * @version 1.0.1
  */
 
 public class Triplet<A, B, C> {
@@ -34,5 +34,9 @@ public class Triplet<A, B, C> {
         }
         Triplet<A, B, C> triplet = (Triplet<A, B, C>) o;
         return this.a.equals(triplet.getA()) && this.b.equals(triplet.getB()) && this.c.equals(triplet.getC());
+    }
+    @Override
+    public String toString() {
+        return a.toString() + ", " + b.toString() + ", " + c.toString();
     }
 }

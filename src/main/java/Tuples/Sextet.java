@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.0
+ * @version 1.0.1
  */
 
 public class Sextet<A, B, C, D, E, F> {
@@ -49,5 +49,9 @@ public class Sextet<A, B, C, D, E, F> {
         }
         Sextet<A, B, C, D, E, F> sextet = (Sextet<A, B, C, D, E, F>) o;
         return this.a.equals(sextet.getA()) && this.b.equals(sextet.getB()) && this.c.equals(sextet.getC()) && this.d.equals(sextet.getD()) && this.e.equals(sextet.getE()) && this.f.equals(sextet.getF());
+    }
+    @Override
+    public String toString() {
+        return a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString() + ", " + f.toString();
     }
 }

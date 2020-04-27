@@ -2,7 +2,7 @@ package Util;
 
 /**
  * @author olcaytaner
- * @version 1.1.0
+ * @version 1.0.0
  */
 
 public class Permutation {

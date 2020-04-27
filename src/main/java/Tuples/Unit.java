@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.0
+ * @version 1.0.1
  */
 
 public class Unit<A> {
@@ -24,5 +24,9 @@ public class Unit<A> {
         }
         Unit<A> unit = (Unit<A>) o;
         return this.a.equals(unit.a);
+    }
+    @Override
+    public String toString() {
+        return a.toString();
     }
 }
