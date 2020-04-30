@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class Quintet<A, B, C, D, E> {
@@ -47,6 +47,6 @@ public class Quintet<A, B, C, D, E> {
     }
     @Override
     public String toString() {
-        return a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString();
+        return "[" + a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString() + "]";
     }
 }

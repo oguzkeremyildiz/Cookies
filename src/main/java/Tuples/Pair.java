@@ -2,7 +2,7 @@ package Tuples;/* Created by oguzkeremyildiz on 17.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class Pair<K, V> {
@@ -32,6 +32,6 @@ public class Pair<K, V> {
     }
     @Override
     public String toString() {
-        return key.toString() + ", " + value.toString();
+        return "[" + key.toString() + ", " + value.toString() + "]";
     }
 }
