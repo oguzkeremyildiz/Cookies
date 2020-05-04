@@ -158,40 +158,37 @@ public class BinaryTree<Symbol> {
     }
 
     private Node<Symbol> findBiggestNear(Node<Symbol> node) {
-        Symbol current = null;
-        Node<Symbol> biggestNear = null;
-        HashSet<Symbol> visited = new HashSet<>();
-        Node<Symbol> currentNode = root;
-        while (!visited.containsAll(nodeSet)) {
-            dfs(visited, currentNode, current, node.getNode(), biggestNear);
-        }
+        search(node, node.getNode(), null);
         return biggest;
     }
 
-    private void dfs(HashSet<Symbol> visited, Node<Symbol> currentNode, Symbol current, Symbol max, Node<Symbol> biggestNear) {
-        if (!visited.containsAll(nodeSet)) {
-            visited.add(currentNode.getNode());
-            if (comparator.compare(currentNode.getNode(), max) < 0) {
-                if (current == null) {
+    private void search(Node<Symbol> currentNode, Symbol max, Node<Symbol> biggestNear) {
+        Symbol current;
+        if (biggestNear == null) {
+            current = null;
+        } else {
+            current = biggestNear.getNode();
+        }
+        if (comparator.compare(currentNode.getNode(), max) < 0) {
+            if (current == null) {
+                current = currentNode.getNode();
+                biggestNear = currentNode;
+                biggest = biggestNear;
+            } else {
+                if (comparator.compare(currentNode.getNode(), current) > 0) {
                     current = currentNode.getNode();
                     biggestNear = currentNode;
-                    biggest = biggestNear;
-                } else {
-                    if (comparator.compare(currentNode.getNode(), current) > 0) {
-                        current = currentNode.getNode();
-                        biggestNear = currentNode;
-                        if (comparator.compare(biggest.getNode(), biggestNear.getNode()) < 0) {
-                            biggest = biggestNear;
-                        }
+                    if (comparator.compare(biggest.getNode(), biggestNear.getNode()) < 0) {
+                        biggest = biggestNear;
                     }
                 }
             }
-            if (currentNode.big != null) {
-                dfs(visited, currentNode.big, biggestNear.getNode(), max, biggestNear);
-            }
-            if (currentNode.small != null) {
-                dfs(visited, currentNode.small, biggestNear.getNode(), max, biggestNear);
-            }
+        }
+        if (currentNode.big != null) {
+            search(currentNode.big, max, biggestNear);
+        }
+        if (currentNode.small != null) {
+            search(currentNode.small, max, biggestNear);
         }
     }
 
