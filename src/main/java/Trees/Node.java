@@ -7,29 +7,39 @@ package Trees;/* Created by oguzkeremyildiz on 4.05.2020 */
 
 public class Node<Symbol> {
 
-    Symbol node;
-    Node<Symbol> big;
-    Node<Symbol> small;
+    Symbol symbol;
+    Node<Symbol> parent;
+    Node<Symbol> right;
+    Node<Symbol> left;
 
-    public Node(Symbol node, Node<Symbol> small, Node<Symbol> big) {
-        this.node = node;
-        this.big = big;
-        this.small = small;
+    public Node(Symbol symbol, Node<Symbol> left, Node<Symbol> right, Node<Symbol> parent) {
+        this.symbol = symbol;
+        this.right = right;
+        this.left = left;
+        this.parent = parent;
     }
 
-    public Symbol getNode() {
-        return node;
+    public Symbol getSymbol() {
+        return symbol;
     }
 
-    public void setNode(Node<Symbol> node) {
-        this.node = node.getNode();
+    public Node<Symbol> getParent() {
+        return parent;
+    }
+
+    public void setParent(Node<Symbol> parent) {
+        this.parent = parent;
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
     }
 
     public Node<Symbol> big() {
-        return big;
+        return right;
     }
 
     public Node<Symbol> small() {
-        return small;
+        return left;
     }
 }

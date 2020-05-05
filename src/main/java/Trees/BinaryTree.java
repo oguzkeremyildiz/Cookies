@@ -1,7 +1,7 @@
 package Trees;/* Created by oguzkeremyildiz on 4.05.2020 */
 
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.Random;
 
 /**
  * @author oguzkeremyildiz
@@ -11,40 +11,43 @@ import java.util.HashSet;
 public class BinaryTree<Symbol> {
 
     private Node<Symbol> root;
-    private HashSet<Symbol> nodeSet;
     private Comparator<Symbol> comparator;
-    private Node<Symbol> biggest;
 
     public BinaryTree(Node<Symbol> root, Comparator<Symbol> comparator) {
         this.root = root;
-        nodeSet = new HashSet<>();
-        nodeSet.add(root.getNode());
         this.comparator = comparator;
     }
 
     public boolean containsNode(Node<Symbol> node) {
-        return nodeSet.contains(node.getNode());
+        return containsNode(node.getSymbol());
+    }
+
+    public boolean containsNode(Symbol no) {
+        if (root.getSymbol().equals(no)) {
+            return true;
+        } else {
+            return findNode(no) != null;
+        }
     }
 
     public void addNode(Symbol no) {
-        if (!nodeSet.contains(no)) {
-            nodeSet.add(no);
+        if (!containsNode(no)) {
             boolean find = false;
             Node<Symbol> current = root;
             while (!find) {
-                if (comparator.compare(current.getNode(), no) > 0) {
-                    if (current.small == null) {
-                        current.small = new Node<>(no, null, null);
+                if (comparator.compare(current.getSymbol(), no) > 0) {
+                    if (current.left == null) {
+                        current.left = new Node<>(no, null, null, current);
                         find = true;
                     } else {
-                        current = current.small;
+                        current = current.left;
                     }
                 } else {
-                    if (current.big == null) {
-                        current.big = new Node<>(no, null, null);
+                    if (current.right == null) {
+                        current.right = new Node<>(no, null, null, current);
                         find = true;
                     } else {
-                        current = current.big;
+                        current = current.right;
                     }
                 }
             }
@@ -52,160 +55,106 @@ public class BinaryTree<Symbol> {
     }
 
     public void addNode(Node<Symbol> node) {
-        if (!containsNode(node)) {
-            nodeSet.add(node.getNode());
-            boolean find = false;
-            Node<Symbol> current = root;
-            while (!find) {
-                if (comparator.compare(current.getNode(), node.getNode()) > 0) {
-                    if (current.small == null) {
-                        current.small = node;
-                        find = true;
-                    } else {
-                        current = current.small;
-                    }
-                } else {
-                    if (current.big == null) {
-                        current.big = node;
-                        find = true;
-                    } else {
-                        current = current.big;
-                    }
-                }
-            }
-        }
+        addNode(node.getSymbol());
+    }
+
+    public void removeAndSetSymbol(Node<Symbol> node, Node<Symbol> replacement){
+        Symbol symbol = replacement.getSymbol();
+        removeNode(symbol);
+        node.setSymbol(symbol);
     }
 
     public void removeNode(Symbol no) {
         Node<Symbol> node = findNode(no);
-        biggest = null;
-        if (containsNode(node)) {
-            if (!root.equals(node)) {
-                if (node.big == null && node.small == null) {
-                    Node<Symbol> current = root;
-                    Node<Symbol> old = null;
-                    while (true) {
-                        if (comparator.compare(current.getNode(), node.getNode()) > 0) {
-                            old = current;
-                            current = current.small;
-                        } else if (comparator.compare(current.getNode(), node.getNode()) < 0) {
-                            old = current;
-                            current = current.big;
-                        } else {
-                            nodeSet.remove(current.getNode());
-                            if (old.small.equals(current)) {
-                                old.small = null;
-                            } else {
-                                old.big = null;
-                            }
-                            break;
-                        }
-                    }
-                } else if (node.big != null && node.small != null){
-                    nodeSet.remove(no);
-                    Node<Symbol> temporary = findBiggestNear(node);
-                    removeNode(findBiggestNear(node).getNode());
-                    node.setNode(temporary);
+        if (!root.equals(node)) {
+            if (node.right == null && node.left == null) {
+                Node<Symbol> parent = node.parent;
+                if (parent.left != null && parent.left.equals(node)) {
+                    parent.left = null;
                 } else {
-                    Node<Symbol> current = root;
-                    Node<Symbol> old = null;
-                    while (true) {
-                        if (comparator.compare(current.getNode(), node.getNode()) > 0) {
-                            old = current;
-                            current = current.small;
-                        } else if (comparator.compare(current.getNode(), node.getNode()) < 0) {
-                            old = current;
-                            current = current.big;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (node.big != null) {
-                        if (old.big.equals(node)) {
-                            old.big = node.big;
-                        } else {
-                            old.small = node.big;
-                        }
-                    } else {
-                        if (old.big.equals(node)) {
-                            old.big = node.small;
-                        } else {
-                            old.small = node.small;
-                        }
-                    }
-                    nodeSet.remove(no);
+                    parent.right = null;
                 }
+            } else if (node.right != null && node.left != null) {
+                Node<Symbol> replacement = findBiggestNearForTwoChildren(node);
+                removeAndSetSymbol(node, replacement);
             } else {
-                if (root.small != null) {
-                    Node<Symbol> current = root.small;
-                    while (current.big != null) {
-                        current = current.big;
-                    }
-                    Node<Symbol> temporary = current;
-                    removeNode(current.getNode());
-                    root.setNode(temporary);
-                } else if (root.big != null) {
-                    Node<Symbol> current = root.big;
-                    while (current.small != null) {
-                        current = current.small;
-                    }
-                    Node<Symbol> temporary = current;
-                    removeNode(current.getNode());
-                    root.setNode(temporary);
+                if (node.left != null) {
+                    Node<Symbol> replacement = searchForSmall(node.left);
+                    removeAndSetSymbol(node, replacement);
+                } else {
+                    Node<Symbol> replacement = searchForBig(node.right);
+                    removeAndSetSymbol(node, replacement);
                 }
             }
-        }
-    }
-
-    private Node<Symbol> findBiggestNear(Node<Symbol> node) {
-        search(node, node.getNode(), null);
-        return biggest;
-    }
-
-    private void search(Node<Symbol> currentNode, Symbol max, Node<Symbol> biggestNear) {
-        Symbol current;
-        if (biggestNear == null) {
-            current = null;
         } else {
-            current = biggestNear.getNode();
-        }
-        if (comparator.compare(currentNode.getNode(), max) < 0) {
-            if (current == null) {
-                current = currentNode.getNode();
-                biggestNear = currentNode;
-                biggest = biggestNear;
+            if (root.left != null) {
+                Node<Symbol> replacement = searchForSmall(root.left);
+                removeAndSetSymbol(root, replacement);
+            } else if (root.right != null) {
+                Node<Symbol> replacement = searchForBig(root.right);
+                removeAndSetSymbol(root, replacement);
             } else {
-                if (comparator.compare(currentNode.getNode(), current) > 0) {
-                    current = currentNode.getNode();
-                    biggestNear = currentNode;
-                    if (comparator.compare(biggest.getNode(), biggestNear.getNode()) < 0) {
-                        biggest = biggestNear;
-                    }
-                }
+                root = null;
             }
         }
-        if (currentNode.big != null) {
-            search(currentNode.big, max, biggestNear);
+    }
+
+    private Node<Symbol> findBiggestNearForTwoChildren(Node<Symbol> node) {
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            return searchForBig(node.right);
+        } else {
+            return searchForSmall(node.left);
         }
-        if (currentNode.small != null) {
-            search(currentNode.small, max, biggestNear);
+    }
+
+    private Node<Symbol> searchForBig(Node<Symbol> currentNode) {
+        Node<Symbol> returning = currentNode;
+        while (returning.left != null) {
+            returning = returning.left;
         }
+        return returning;
+    }
+
+    private Node<Symbol> searchForSmall(Node<Symbol> currentNode) {
+        Node<Symbol> returning = currentNode;
+        while (returning.right != null) {
+            returning = returning.right;
+        }
+        return returning;
+    }
+
+    private Node<Symbol> findNode(Node<Symbol> node) {
+        return findNode(node.getSymbol());
     }
 
     private Node<Symbol> findNode(Symbol no) {
-        if (root.getNode().equals(no)) {
+        if (root.getSymbol().equals(no)) {
             return root;
         } else {
             Node<Symbol> current = root;
             while (true) {
-                if (comparator.compare(current.getNode(), no) > 0) {
-                    current = current.small;
-                } else if (comparator.compare(current.getNode(), no) < 0) {
-                    current = current.big;
+                if (no != null) {
+                    if (comparator.compare(current.getSymbol(), no) > 0) {
+                        if (current.left != null) {
+                            current = current.left;
+                        } else {
+                            break;
+                        }
+                    } else if (comparator.compare(current.getSymbol(), no) < 0) {
+                        if (current.right != null) {
+                            current = current.right;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        return current;
+                    }
                 } else {
-                    return current;
+                    break;
                 }
             }
         }
+        return null;
     }
 }
