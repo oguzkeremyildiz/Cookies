@@ -1,11 +1,12 @@
 package Trees;/* Created by oguzkeremyildiz on 4.05.2020 */
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class BinaryTree<Symbol> {
@@ -62,6 +63,10 @@ public class BinaryTree<Symbol> {
         Symbol symbol = replacement.getSymbol();
         removeNode(symbol);
         node.setSymbol(symbol);
+    }
+
+    public void removeNode(Node<Symbol> node) {
+        removeNode(node.getSymbol());
     }
 
     public void removeNode(Symbol no) {
@@ -156,5 +161,23 @@ public class BinaryTree<Symbol> {
             }
         }
         return null;
+    }
+
+    public void print() {
+        LinkedList<Symbol> list = new LinkedList<>();
+        list.add(root.getSymbol());
+        depthFirstSearch(root, list);
+        System.out.println(list);
+    }
+
+    private void depthFirstSearch(Node<Symbol> node, LinkedList<Symbol> list) {
+        if (node.left != null) {
+            list.add(node.left.getSymbol());
+            depthFirstSearch(node.left, list);
+        }
+        if (node.right != null) {
+            list.add(node.right.getSymbol());
+            depthFirstSearch(node.right, list);
+        }
     }
 }
