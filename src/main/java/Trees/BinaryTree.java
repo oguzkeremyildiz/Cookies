@@ -6,7 +6,7 @@ import java.util.Random;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class BinaryTree<Symbol> {
@@ -37,18 +37,18 @@ public class BinaryTree<Symbol> {
             Node<Symbol> current = root;
             while (!find) {
                 if (comparator.compare(current.getSymbol(), no) > 0) {
-                    if (current.left == null) {
-                        current.left = new Node<>(no, null, null, current);
+                    if (current.getLeft() == null) {
+                        current.setLeft(new Node<>(no, null, null, current));
                         find = true;
                     } else {
-                        current = current.left;
+                        current = current.getLeft();
                     }
                 } else {
-                    if (current.right == null) {
-                        current.right = new Node<>(no, null, null, current);
+                    if (current.getRight() == null) {
+                        current.setRight(new Node<>(no, null, null, current));
                         find = true;
                     } else {
-                        current = current.right;
+                        current = current.getRight();
                     }
                 }
             }
@@ -72,31 +72,31 @@ public class BinaryTree<Symbol> {
     public void removeNode(Symbol no) {
         Node<Symbol> node = findNode(no);
         if (!root.equals(node)) {
-            if (node.right == null && node.left == null) {
-                Node<Symbol> parent = node.parent;
-                if (parent.left != null && parent.left.equals(node)) {
-                    parent.left = null;
+            if (node.getRight() == null && node.getLeft() == null) {
+                Node<Symbol> parent = node.getParent();
+                if (parent.getLeft() != null && parent.getLeft().equals(node)) {
+                    parent.setLeft(null);
                 } else {
-                    parent.right = null;
+                    parent.setRight(null);
                 }
-            } else if (node.right != null && node.left != null) {
+            } else if (node.getRight() != null && node.getLeft() != null) {
                 Node<Symbol> replacement = findBiggestNearForTwoChildren(node);
                 removeAndSetSymbol(node, replacement);
             } else {
-                if (node.left != null) {
-                    Node<Symbol> replacement = searchForSmall(node.left);
+                if (node.getLeft() != null) {
+                    Node<Symbol> replacement = searchForSmall(node.getLeft());
                     removeAndSetSymbol(node, replacement);
                 } else {
-                    Node<Symbol> replacement = searchForBig(node.right);
+                    Node<Symbol> replacement = searchForBig(node.getRight());
                     removeAndSetSymbol(node, replacement);
                 }
             }
         } else {
-            if (root.left != null) {
-                Node<Symbol> replacement = searchForSmall(root.left);
+            if (root.getLeft() != null) {
+                Node<Symbol> replacement = searchForSmall(root.getLeft());
                 removeAndSetSymbol(root, replacement);
-            } else if (root.right != null) {
-                Node<Symbol> replacement = searchForBig(root.right);
+            } else if (root.getRight() != null) {
+                Node<Symbol> replacement = searchForBig(root.getRight());
                 removeAndSetSymbol(root, replacement);
             } else {
                 root = null;
@@ -107,24 +107,24 @@ public class BinaryTree<Symbol> {
     private Node<Symbol> findBiggestNearForTwoChildren(Node<Symbol> node) {
         Random random = new Random();
         if (random.nextBoolean()) {
-            return searchForBig(node.right);
+            return searchForBig(node.getRight());
         } else {
-            return searchForSmall(node.left);
+            return searchForSmall(node.getLeft());
         }
     }
 
     private Node<Symbol> searchForBig(Node<Symbol> currentNode) {
         Node<Symbol> returning = currentNode;
-        while (returning.left != null) {
-            returning = returning.left;
+        while (returning.getLeft() != null) {
+            returning = returning.getLeft();
         }
         return returning;
     }
 
     private Node<Symbol> searchForSmall(Node<Symbol> currentNode) {
         Node<Symbol> returning = currentNode;
-        while (returning.right != null) {
-            returning = returning.right;
+        while (returning.getRight() != null) {
+            returning = returning.getRight();
         }
         return returning;
     }
@@ -141,14 +141,14 @@ public class BinaryTree<Symbol> {
             while (true) {
                 if (no != null) {
                     if (comparator.compare(current.getSymbol(), no) > 0) {
-                        if (current.left != null) {
-                            current = current.left;
+                        if (current.getLeft() != null) {
+                            current = current.getLeft();
                         } else {
                             break;
                         }
                     } else if (comparator.compare(current.getSymbol(), no) < 0) {
-                        if (current.right != null) {
-                            current = current.right;
+                        if (current.getRight() != null) {
+                            current = current.getRight();
                         } else {
                             break;
                         }
@@ -171,13 +171,13 @@ public class BinaryTree<Symbol> {
     }
 
     private void depthFirstSearch(Node<Symbol> node, LinkedList<Symbol> list) {
-        if (node.left != null) {
-            list.add(node.left.getSymbol());
-            depthFirstSearch(node.left, list);
+        if (node.getLeft() != null) {
+            list.add(node.getLeft().getSymbol());
+            depthFirstSearch(node.getLeft(), list);
         }
-        if (node.right != null) {
-            list.add(node.right.getSymbol());
-            depthFirstSearch(node.right, list);
+        if (node.getRight() != null) {
+            list.add(node.getRight().getSymbol());
+            depthFirstSearch(node.getRight(), list);
         }
     }
 }

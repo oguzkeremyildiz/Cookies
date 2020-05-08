@@ -2,15 +2,15 @@ package Trees;/* Created by oguzkeremyildiz on 4.05.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class Node<Symbol> {
 
-    Symbol symbol;
-    Node<Symbol> parent;
-    Node<Symbol> right;
-    Node<Symbol> left;
+    private Symbol symbol;
+    private Node<Symbol> parent;
+    private Node<Symbol> right;
+    private Node<Symbol> left;
 
     public Node(Symbol symbol, Node<Symbol> left, Node<Symbol> right, Node<Symbol> parent) {
         this.symbol = symbol;
@@ -35,11 +35,19 @@ public class Node<Symbol> {
         this.symbol = symbol;
     }
 
-    public Node<Symbol> big() {
+    public Node<Symbol> getRight() {
         return right;
     }
 
-    public Node<Symbol> small() {
+    public Node<Symbol> getLeft() {
         return left;
+    }
+
+    public void setLeft(Node<Symbol> left) {
+        this.left = left;
+    }
+
+    public void setRight(Node<Symbol> right) {
+        this.right = right;
     }
 }
