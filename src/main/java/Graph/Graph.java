@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class Graph<Symbol> {
@@ -80,13 +80,24 @@ public class Graph<Symbol> {
     }
 
     /**
-     * A get method returns the list brought by index,
+     * A get method returns the list brought by index.
      * @param index Symbol input.
      * @return {@link java.util.LinkedList} of Symbol.
      */
 
     public LinkedList<Symbol> get(Symbol index) {
         return edgeList.get(index);
+    }
+
+    /**
+     * A get method returns an index inside the element.
+     * @param element Symbol input.
+     * @param index int input.
+     * @return Symbol.
+     */
+
+    public Symbol get(Symbol element, int index) {
+        return edgeList.get(element).get(index);
     }
 
     /**

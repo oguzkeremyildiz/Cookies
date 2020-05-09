@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class WeightedGraph<Symbol> {
@@ -88,5 +88,9 @@ public class WeightedGraph<Symbol> {
 
     public LinkedList<Pair<Symbol, Integer>> get(Symbol index) {
         return edgeList.get(index);
+    }
+
+    public Pair<Symbol, Integer> get(Symbol element, int index) {
+        return edgeList.get(element).get(index);
     }
 }
