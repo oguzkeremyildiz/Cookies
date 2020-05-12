@@ -1,4 +1,4 @@
-package Util;
+package Cookies.Util;
 
 /**
  * @author olcaytaner

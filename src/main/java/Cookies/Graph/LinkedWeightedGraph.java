@@ -1,6 +1,6 @@
-package Graph;/* Created by oguzkeremyildiz on 27.04.2020 */
+package Cookies.Graph;/* Created by oguzkeremyildiz on 27.04.2020 */
 
-import Tuples.Pair;
+import Cookies.Tuple.Pair;
 
 import java.util.*;
 

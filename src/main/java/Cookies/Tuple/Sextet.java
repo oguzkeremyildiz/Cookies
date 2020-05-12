@@ -1,4 +1,4 @@
-package Tuples;/* Created by oguzkeremyildiz on 18.04.2020 */
+package Cookies.Tuple;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz

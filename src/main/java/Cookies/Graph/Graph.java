@@ -1,4 +1,4 @@
-package Graph;/* Created by oguzkeremyildiz on 28.04.2020 */
+package Cookies.Graph;/* Created by oguzkeremyildiz on 11.04.2020 */
 
 import java.util.*;
 
@@ -7,21 +7,21 @@ import java.util.*;
  * @version 1.0.1
  */
 
-public class LinkedGraph<Symbol> {
-    private LinkedHashSet<Symbol> vertexList;
-    private LinkedHashMap<Symbol, LinkedList<Symbol>> edgeList;
+public class Graph<Symbol> {
+    private HashSet<Symbol> vertexList;
+    private HashMap<Symbol, LinkedList<Symbol>> edgeList;
 
     /**
      * A constructor of {@link Graph} class which Initialized new {@link java.util.HashMap} and {@link java.util.HashSet}.
      */
 
-    public LinkedGraph(){
-        edgeList = new LinkedHashMap<>();
-        vertexList = new LinkedHashSet<>();
+    public Graph(){
+        edgeList = new HashMap<>();
+        vertexList = new HashSet<>();
     }
 
-    public LinkedGraph(LinkedHashSet<Symbol> vertexList){
-        edgeList = new LinkedHashMap<>();
+    public Graph(HashSet<Symbol> vertexList){
+        edgeList = new HashMap<>();
         this.vertexList = vertexList;
     }
 
@@ -80,7 +80,7 @@ public class LinkedGraph<Symbol> {
     }
 
     /**
-     * A get method returns the list brought by index,
+     * A get method returns the list brought by index.
      * @param index Symbol input.
      * @return {@link java.util.LinkedList} of Symbol.
      */
@@ -159,17 +159,6 @@ public class LinkedGraph<Symbol> {
 
     public Set<Symbol> getKeySet() {
         return edgeList.keySet();
-    }
-
-    /**
-     * A getFirst get first added list.
-     * @return edgeList's first key.
-     */
-
-    public LinkedList<Symbol> getFirst() {
-        Map.Entry<Symbol, LinkedList<Symbol>> entry = edgeList.entrySet().iterator().next();
-        Symbol key = entry.getKey();
-        return edgeList.get(key);
     }
 
     /**
