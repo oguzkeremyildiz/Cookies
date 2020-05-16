@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class WeightedGraph<Symbol> {
