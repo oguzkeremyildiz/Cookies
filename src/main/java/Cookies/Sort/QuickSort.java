@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class QuickSort<Symbol>  {
@@ -60,6 +60,33 @@ public class QuickSort<Symbol>  {
         return i + 1;
     }
     public void sort(LinkedList<Symbol> list, int first, int last){
+        int pivot;
+        if (first < last){
+            pivot = partition(list, first, last);
+            sort(list, first, pivot - 1);
+            sort(list, pivot + 1, last);
+        }
+    }
+
+    private void swap(Symbol[] list, int i, int j){
+        Symbol tmp;
+        tmp = list[i];
+        list[i] = list[j];
+        list[j] = tmp;
+    }
+    private int partition(Symbol[] list, int first, int last){
+        Symbol x = list[last];
+        int i = first - 1, j;
+        for (j = first; j < last; j++){
+            if (comparator.compare(list[j], x) < 0){
+                i++;
+                swap(list, i, j);
+            }
+        }
+        swap(list, i + 1, last);
+        return i + 1;
+    }
+    public void sort(Symbol[] list, int first, int last){
         int pivot;
         if (first < last){
             pivot = partition(list, first, last);
