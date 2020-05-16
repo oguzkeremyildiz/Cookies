@@ -2,10 +2,7 @@ package Cookies.Graph;/* Created by oguzkeremyildiz on 11.04.2020 */
 
 import Cookies.Tuple.Pair;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author oguzkeremyildiz
@@ -92,5 +89,28 @@ public class WeightedGraph<Symbol> {
 
     public Pair<Symbol, Integer> get(Symbol element, int index) {
         return edgeList.get(element).get(index);
+    }
+
+    public HashMap<Symbol, Integer> bellmanFord(Symbol edge) {
+        HashMap<Symbol, Integer> map = new HashMap<>();
+        map.put(edge, 0);
+        for (Symbol element : edgeList.keySet()) {
+            if (!element.equals(edge)) {
+                map.put(element, Integer.MAX_VALUE);
+            }
+        }
+        for (int t = 0; t < edgeList.size() - 1; t++) {
+            for (Symbol key : map.keySet()) {
+                for (int i = 0; i < this.get(key).size(); i++) {
+                    Pair<Symbol, Integer> element = this.get(key).get(i);
+                    if (!map.get(key).equals(Integer.MAX_VALUE)) {
+                        if (map.get(element.getKey()) > element.getValue() + map.get(key)) {
+                            map.put(element.getKey(), element.getValue() + map.get(key));
+                        }
+                    }
+                }
+            }
+        }
+        return map;
     }
 }
