@@ -6,7 +6,7 @@
 
     <groupId>io.github.oguzkeremyildiz</groupId>
     <artifactId>Cookies</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 
     <name>Cookies</name>
     <description>Java library</description>
@@ -50,8 +50,12 @@
                     <compilerArgs>
                         --enable-preview
                     </compilerArgs>
-                    <source>14</source>
-                    <target>14</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>--enable-preview</argLine>
                 </configuration>
             </plugin>
             <plugin>
