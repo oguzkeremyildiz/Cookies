@@ -91,21 +91,21 @@ public class WeightedGraph<Symbol> {
         return edgeList.get(element).get(index);
     }
 
-    public HashMap<Symbol, Integer> bellmanFord(Symbol edge) {
-        HashMap<Symbol, Integer> map = new HashMap<>();
-        map.put(edge, 0);
+    public HashMap<Symbol, Pair<Integer, Symbol>> bellmanFord(Symbol edge) {
+        HashMap<Symbol, Pair<Integer, Symbol>> map = new HashMap<>();
+        map.put(edge, new Pair<>(0, edge));
         for (Symbol element : edgeList.keySet()) {
             if (!element.equals(edge)) {
-                map.put(element, Integer.MAX_VALUE);
+                map.put(element, new Pair<>(Integer.MAX_VALUE, null));
             }
         }
         for (int t = 0; t < edgeList.size() - 1; t++) {
             for (Symbol key : map.keySet()) {
                 for (int i = 0; i < this.get(key).size(); i++) {
                     Pair<Symbol, Integer> element = this.get(key).get(i);
-                    if (!map.get(key).equals(Integer.MAX_VALUE)) {
-                        if (map.get(element.getKey()) > element.getValue() + map.get(key)) {
-                            map.put(element.getKey(), element.getValue() + map.get(key));
+                    if (!map.get(key).getKey().equals(Integer.MAX_VALUE)) {
+                        if (map.get(element.getKey()).getKey() > element.getValue() + map.get(key).getKey()) {
+                            map.put(element.getKey(), new Pair<>(element.getValue() + map.get(key).getKey(), key));
                         }
                     }
                 }
