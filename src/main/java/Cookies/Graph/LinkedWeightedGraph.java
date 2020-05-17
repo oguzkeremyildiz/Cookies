@@ -105,7 +105,7 @@ public class LinkedWeightedGraph<Symbol> {
                 map.put(element, new Pair<>(Integer.MAX_VALUE, null));
             }
         }
-        for (int t = 0; t < edgeList.size() - 1; t++) {
+        for (int t = 0; t < vertexList.size() - 1; t++) {
             for (Symbol key : map.keySet()) {
                 if (this.containsKey(key)) {
                     for (int i = 0; i < this.get(key).size(); i++) {
@@ -123,16 +123,16 @@ public class LinkedWeightedGraph<Symbol> {
     }
 
     public int[][] floydWarshall() {
-        int[][] array = new int[this.size()][this.size()];
+        int[][] array = new int[vertexList.size()][vertexList.size()];
         int current;
         LinkedHashMap<Symbol, Integer> map = new LinkedHashMap<>();
         int i = -1;
-        for (Symbol key : this.getKeySet()) {
+        for (Symbol key : vertexList) {
             i++;
             map.put(key, i);
         }
-        for (int j = 0; j < this.size(); j++) {
-            for (int k = 0; k < this.size(); k++) {
+        for (int j = 0; j < vertexList.size(); j++) {
+            for (int k = 0; k < vertexList.size(); k++) {
                 if (j == k) {
                     array[j][k] = 0;
                 } else {
@@ -145,9 +145,9 @@ public class LinkedWeightedGraph<Symbol> {
                 array[map.get(key)][map.get(this.get(key).get(k).getKey())] = this.get(key).get(k).getValue();
             }
         }
-        for (int j = 0; j < this.size(); j++) {
-            for (int k = 0; k < this.size(); k++) {
-                for (int l = 0; l < this.size(); l++) {
+        for (int j = 0; j < vertexList.size(); j++) {
+            for (int k = 0; k < vertexList.size(); k++) {
+                for (int l = 0; l < vertexList.size(); l++) {
                     if (array[k][j] != Integer.MAX_VALUE && array[j][l] != Integer.MAX_VALUE) {
                         current = array[k][j] + array[j][l];
                         if (current < array[k][l]) {
@@ -160,17 +160,17 @@ public class LinkedWeightedGraph<Symbol> {
         return array;
     }
 
-    public Pair<LinkedHashMap<Symbol, Integer>, int[][]> floydWarshallWithKeys() {
-        int[][] array = new int[this.size()][this.size()];
+    public Pair<LinkedHashMap<Integer, Symbol>, int[][]> floydWarshallWithKeys() {
+        int[][] array = new int[vertexList.size()][vertexList.size()];
         int current;
         LinkedHashMap<Symbol, Integer> map = new LinkedHashMap<>();
         int i = -1;
-        for (Symbol key : this.getKeySet()) {
+        for (Symbol key : vertexList) {
             i++;
             map.put(key, i);
         }
-        for (int j = 0; j < this.size(); j++) {
-            for (int k = 0; k < this.size(); k++) {
+        for (int j = 0; j < vertexList.size(); j++) {
+            for (int k = 0; k < vertexList.size(); k++) {
                 if (j == k) {
                     array[j][k] = 0;
                 } else {
@@ -183,9 +183,9 @@ public class LinkedWeightedGraph<Symbol> {
                 array[map.get(key)][map.get(this.get(key).get(k).getKey())] = this.get(key).get(k).getValue();
             }
         }
-        for (int j = 0; j < this.size(); j++) {
-            for (int k = 0; k < this.size(); k++) {
-                for (int l = 0; l < this.size(); l++) {
+        for (int j = 0; j < vertexList.size(); j++) {
+            for (int k = 0; k < vertexList.size(); k++) {
+                for (int l = 0; l < vertexList.size(); l++) {
                     if (array[k][j] != Integer.MAX_VALUE && array[j][l] != Integer.MAX_VALUE) {
                         current = array[k][j] + array[j][l];
                         if (current < array[k][l]) {
@@ -195,6 +195,28 @@ public class LinkedWeightedGraph<Symbol> {
                 }
             }
         }
-        return new Pair<>(map, array);
+        return new Pair<>(invert(map), array);
+    }
+    private LinkedHashMap<Integer, Symbol> invert(LinkedHashMap<Symbol, Integer> map) {
+        LinkedHashMap<Integer, Symbol> inv = new LinkedHashMap<>();
+        for (Symbol key : map.keySet()) {
+            inv.put(map.get(key), key);
+        }
+        return inv;
+    }
+    public void printAllShortestPath() {
+        Pair<LinkedHashMap<Integer, Symbol>, int[][]> pair;
+        pair = this.floydWarshallWithKeys();
+        for (int i = 0; i < pair.getValue().length; i++) {
+            for (int j = 0; j < pair.getValue()[0].length; j++) {
+                System.out.println(pair.getKey().get(i) + " -> " + pair.getKey().get(j) + " = " + pair.getValue()[i][j]);
+            }
+        }
+    }
+    public void printShortestPath(Symbol key) {
+        LinkedHashMap<Symbol, Pair<Integer, Symbol>> map = this.bellmanFord(key);
+        for (Symbol element : map.keySet()) {
+            System.out.println(key + " -> " + element + " = " + map.get(element));
+        }
     }
 }
