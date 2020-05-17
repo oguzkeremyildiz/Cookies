@@ -2,7 +2,7 @@ package Cookies.Tuple;/* Created by oguzkeremyildiz on 17.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 public class Pair<K, V> {
@@ -32,6 +32,18 @@ public class Pair<K, V> {
     }
     @Override
     public String toString() {
-        return "[" + key.toString() + ", " + value.toString() + "]";
+        return "[" + handleK(key) + ", " + handleV(value) + "]";
+    }
+    private String handleK(K current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleV(V current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
     }
 }

@@ -2,7 +2,7 @@ package Cookies.Tuple;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 public class Triplet<A, B, C> {
@@ -37,6 +37,24 @@ public class Triplet<A, B, C> {
     }
     @Override
     public String toString() {
-        return "[" + a.toString() + ", " + b.toString() + ", " + c.toString() + "]";
+        return "[" + handleA(a) + ", " + handleB(b) + ", " + handleC(c) + "]";
+    }
+    private String handleA(A current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleB(B current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleC(C current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
     }
 }

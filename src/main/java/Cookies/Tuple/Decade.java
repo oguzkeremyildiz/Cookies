@@ -2,7 +2,7 @@ package Cookies.Tuple;/* Created by oguzkeremyildiz on 12.05.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class Decade<A, B, C, D, E, F, G, H, I, J> {
@@ -72,6 +72,66 @@ public class Decade<A, B, C, D, E, F, G, H, I, J> {
     }
     @Override
     public String toString() {
-        return "[" + a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString() + ", " + f.toString() + ", " + g.toString() + ", " + h.toString() + ", " + i.toString() + ", " + j.toString() + "]";
+        return "[" + handleA(a) + ", " + handleB(b) + ", " + handleC(c) + ", " + handleD(d) + ", " + handleE(e) + ", " + handleF(f) + ", " + handleG(g) + ", " + handleH(h) + ", " + handleI(i) + ", " + handleJ(j) + "]";
+    }
+    private String handleA(A current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleB(B current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleC(C current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleD(D current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleE(E current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleF(F current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleG(G current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleH(H current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleI(I current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleJ(J current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
     }
 }

@@ -2,7 +2,7 @@ package Cookies.Tuple;/* Created by oguzkeremyildiz on 22.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 public class Octet<A, B, C, D, E, F, G, H> {
@@ -62,6 +62,54 @@ public class Octet<A, B, C, D, E, F, G, H> {
     }
     @Override
     public String toString() {
-        return "[" + a.toString() + ", " + b.toString() + ", " + c.toString() + ", " + d.toString() + ", " + e.toString() + ", " + f.toString() + ", " + g.toString() + ", " + h.toString() + "]";
+        return "[" + handleA(a) + ", " + handleB(b) + ", " + handleC(c) + ", " + handleD(d) + ", " + handleE(e) + ", " + handleF(f) + ", " + handleG(g) + ", " + handleH(h) + "]";
+    }
+    private String handleA(A current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleB(B current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleC(C current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleD(D current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleE(E current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleF(F current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleG(G current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
+    }
+    private String handleH(H current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
     }
 }

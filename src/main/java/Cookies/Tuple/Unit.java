@@ -2,7 +2,7 @@ package Cookies.Tuple;/* Created by oguzkeremyildiz on 18.04.2020 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 public class Unit<A> {
@@ -27,6 +27,12 @@ public class Unit<A> {
     }
     @Override
     public String toString() {
-        return "[" + a.toString() + "]";
+        return "[" + handleA(a) + "]";
+    }
+    private String handleA(A current) {
+        if (current == null) {
+            return "null";
+        }
+        return current.toString();
     }
 }
