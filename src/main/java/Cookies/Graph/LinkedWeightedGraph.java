@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.3
+ * @version 1.0.4
  */
 
 public class LinkedWeightedGraph<Symbol> {
@@ -100,23 +100,101 @@ public class LinkedWeightedGraph<Symbol> {
     public LinkedHashMap<Symbol, Pair<Integer, Symbol>> bellmanFord(Symbol edge) {
         LinkedHashMap<Symbol, Pair<Integer, Symbol>> map = new LinkedHashMap<>();
         map.put(edge, new Pair<>(0, edge));
-        for (Symbol element : edgeList.keySet()) {
+        for (Symbol element : vertexList) {
             if (!element.equals(edge)) {
                 map.put(element, new Pair<>(Integer.MAX_VALUE, null));
             }
         }
         for (int t = 0; t < edgeList.size() - 1; t++) {
             for (Symbol key : map.keySet()) {
-                for (int i = 0; i < this.get(key).size(); i++) {
-                    Pair<Symbol, Integer> element = this.get(key).get(i);
-                    if (!map.get(key).getKey().equals(Integer.MAX_VALUE)) {
-                        if (map.get(element.getKey()).getKey() > element.getValue() + map.get(key).getKey()) {
-                            map.put(element.getKey(), new Pair<>(element.getValue() + map.get(key).getKey(), key));
+                if (this.containsKey(key)) {
+                    for (int i = 0; i < this.get(key).size(); i++) {
+                        Pair<Symbol, Integer> element = this.get(key).get(i);
+                        if (!map.get(key).getKey().equals(Integer.MAX_VALUE)) {
+                            if (map.get(element.getKey()).getKey() > element.getValue() + map.get(key).getKey()) {
+                                map.put(element.getKey(), new Pair<>(element.getValue() + map.get(key).getKey(), key));
+                            }
                         }
                     }
                 }
             }
         }
         return map;
+    }
+
+    public int[][] floydWarshall() {
+        int[][] array = new int[this.size()][this.size()];
+        int current;
+        LinkedHashMap<Symbol, Integer> map = new LinkedHashMap<>();
+        int i = -1;
+        for (Symbol key : this.getKeySet()) {
+            i++;
+            map.put(key, i);
+        }
+        for (int j = 0; j < this.size(); j++) {
+            for (int k = 0; k < this.size(); k++) {
+                if (j == k) {
+                    array[j][k] = 0;
+                } else {
+                    array[j][k] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        for (Symbol key : this.getKeySet()) {
+            for (int k = 0; k < this.get(key).size(); k++) {
+                array[map.get(key)][map.get(this.get(key).get(k).getKey())] = this.get(key).get(k).getValue();
+            }
+        }
+        for (int j = 0; j < this.size(); j++) {
+            for (int k = 0; k < this.size(); k++) {
+                for (int l = 0; l < this.size(); l++) {
+                    if (array[k][j] != Integer.MAX_VALUE && array[j][l] != Integer.MAX_VALUE) {
+                        current = array[k][j] + array[j][l];
+                        if (current < array[k][l]) {
+                            array[k][l] = current;
+                        }
+                    }
+                }
+            }
+        }
+        return array;
+    }
+
+    public Pair<LinkedHashMap<Symbol, Integer>, int[][]> floydWarshallWithKeys() {
+        int[][] array = new int[this.size()][this.size()];
+        int current;
+        LinkedHashMap<Symbol, Integer> map = new LinkedHashMap<>();
+        int i = -1;
+        for (Symbol key : this.getKeySet()) {
+            i++;
+            map.put(key, i);
+        }
+        for (int j = 0; j < this.size(); j++) {
+            for (int k = 0; k < this.size(); k++) {
+                if (j == k) {
+                    array[j][k] = 0;
+                } else {
+                    array[j][k] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        for (Symbol key : this.getKeySet()) {
+            for (int k = 0; k < this.get(key).size(); k++) {
+                array[map.get(key)][map.get(this.get(key).get(k).getKey())] = this.get(key).get(k).getValue();
+            }
+        }
+        for (int j = 0; j < this.size(); j++) {
+            for (int k = 0; k < this.size(); k++) {
+                for (int l = 0; l < this.size(); l++) {
+                    if (array[k][j] != Integer.MAX_VALUE && array[j][l] != Integer.MAX_VALUE) {
+                        current = array[k][j] + array[j][l];
+                        if (current < array[k][l]) {
+                            array[k][l] = current;
+                        }
+                    }
+                }
+            }
+        }
+        return new Pair<>(map, array);
     }
 }
