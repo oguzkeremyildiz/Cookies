@@ -54,6 +54,11 @@ public class WeightedGraph<Symbol, Length> {
         }
     }
 
+    public void addUndirectedEdge(Symbol from, Symbol to, Length length) {
+        addDirectedEdge(from, to, length);
+        addDirectedEdge(to, from, length);
+    }
+
     public void addUndirectedEdge(Symbol from, Symbol to, Length lengthFrom, Length lengthTo) {
         addDirectedEdge(from, to, lengthTo);
         addDirectedEdge(to, from, lengthFrom);
@@ -145,7 +150,7 @@ public class WeightedGraph<Symbol, Length> {
         for (int j = 0; j < vertexList.size(); j++) {
             for (int k = 0; k < vertexList.size(); k++) {
                 for (int l = 0; l < vertexList.size(); l++) {
-                    if (array[k][j] != lengthInterface.max() && array[j][l] != lengthInterface.max()) {
+                    if (lengthInterface.compare(array[k][j], lengthInterface.max()) != 0 && lengthInterface.compare(array[j][l], lengthInterface.max()) != 0) {
                         current = lengthInterface.add(array[k][j], array[j][l]);
                         if (lengthInterface.compare(array[k][l], current) > 0) {
                             array[k][l] = current;
