@@ -20,4 +20,9 @@ public class IntegerLength implements LengthInterface<Integer>{
     public Integer add(Integer length1, Integer length2) {
         return length1 + length2;
     }
+
+    @Override
+    public Integer remove(Integer length1, Integer length2) {
+        return length1 - length2;
+    }
 }

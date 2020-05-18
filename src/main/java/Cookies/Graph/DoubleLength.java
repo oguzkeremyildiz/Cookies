@@ -20,4 +20,9 @@ public class DoubleLength implements LengthInterface<Double>{
     public Double add(Double length1, Double length2) {
         return length1 + length2;
     }
+
+    @Override
+    public Double remove(Double length1, Double length2) {
+        return length1 - length2;
+    }
 }

@@ -1,12 +1,13 @@
 package Cookies.Graph;/* Created by oguzkeremyildiz on 11.04.2020 */
 
 import Cookies.Tuple.Pair;
+import Cookies.Tuple.Triplet;
 
 import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.4
+ * @version 1.0.5
  */
 
 public class WeightedGraph<Symbol, Length> {
@@ -219,6 +220,38 @@ public class WeightedGraph<Symbol, Length> {
         HashMap<Symbol, Pair<Length, Symbol>> map = this.bellmanFord(key);
         for (Symbol element : map.keySet()) {
             System.out.println(key + " -> " + element + " = " + map.get(element));
+        }
+    }
+    public Length kruskal() {
+        Length total = lengthInterface.min();
+        HashSet<Symbol> visited = new HashSet<>();
+        LinkedList<Triplet<Symbol, Symbol, Length>> list = new LinkedList<>();
+        for (Symbol key : edgeList.keySet()) {
+            for (int i = 0; i < edgeList.get(key).size(); i++) {
+                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue()))) {
+                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue()));
+                }
+            }
+        }
+        sort(list);
+        for (Triplet<Symbol, Symbol, Length> tripletElement : list) {
+            if (!visited.contains(tripletElement.getA()) || !visited.contains(tripletElement.getB())) {
+                total = lengthInterface.add(total, tripletElement.getC());
+                visited.add(tripletElement.getA());
+                visited.add(tripletElement.getB());
+            }
+        }
+        return total;
+    }
+    private void sort(LinkedList<Triplet<Symbol, Symbol, Length>> list) {
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < list.size(); j++) {
+                if (lengthInterface.compare(list.get(i).getC(), list.get(j).getC()) < 0) {
+                    Triplet<Symbol, Symbol, Length> tmp = list.get(i);
+                    list.set(i, list.get(j));
+                    list.set(j, tmp);
+                }
+            }
         }
     }
 }
