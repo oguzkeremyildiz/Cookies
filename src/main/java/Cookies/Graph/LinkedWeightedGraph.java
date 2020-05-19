@@ -1,6 +1,8 @@
 package Cookies.Graph;/* Created by oguzkeremyildiz on 27.04.2020 */
 
+import Cookies.Set.LinkedDisjointSet;
 import Cookies.Tuple.Pair;
+import Cookies.Tuple.Triplet;
 
 import java.util.*;
 
@@ -83,15 +85,6 @@ public class LinkedWeightedGraph<Symbol, Length> {
         edgeList.put(index, list);
         if (list.size() > 0) {
             for (Pair<Symbol, Length> element : list) {
-                vertexList.add(element.getKey());
-            }
-        }
-    }
-
-    public void replace(Symbol key, LinkedList<Pair<Symbol, Length>> value) {
-        edgeList.replace(key, value);
-        if (value.size() > 0) {
-            for (Pair<Symbol, Length> element : value) {
                 vertexList.add(element.getKey());
             }
         }
@@ -224,6 +217,43 @@ public class LinkedWeightedGraph<Symbol, Length> {
         LinkedHashMap<Symbol, Pair<Length, Symbol>> map = this.bellmanFord(key);
         for (Symbol element : map.keySet()) {
             System.out.println(key + " -> " + element + " = " + map.get(element));
+        }
+    }
+    public Length kruskal() {
+        Length total = lengthInterface.min();
+        LinkedList<Triplet<Symbol, Symbol, Length>> list = new LinkedList<>();
+        Symbol[] nodes = (Symbol[]) new Object[vertexList.size()];
+        int j = -1;
+        for (Symbol element : vertexList) {
+            j++;
+            nodes[j] = element;
+        }
+        LinkedDisjointSet<Symbol> set = new LinkedDisjointSet<>(nodes);
+        for (Symbol key : edgeList.keySet()) {
+            for (int i = 0; i < edgeList.get(key).size(); i++) {
+                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue()))) {
+                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue()));
+                }
+            }
+        }
+        sort(list);
+        for (Triplet<Symbol, Symbol, Length> tripletElement : list) {
+            if (set.findSet(tripletElement.getA()) != set.findSet(tripletElement.getB())) {
+                set.union(tripletElement.getA(), tripletElement.getB());
+                total = lengthInterface.add(total, tripletElement.getC());
+            }
+        }
+        return total;
+    }
+    private void sort(LinkedList<Triplet<Symbol, Symbol, Length>> list) {
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < list.size(); j++) {
+                if (lengthInterface.compare(list.get(i).getC(), list.get(j).getC()) < 0) {
+                    Triplet<Symbol, Symbol, Length> tmp = list.get(i);
+                    list.set(i, list.get(j));
+                    list.set(j, tmp);
+                }
+            }
         }
     }
 }
