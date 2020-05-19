@@ -1,5 +1,6 @@
 package Cookies.Graph;/* Created by oguzkeremyildiz on 11.04.2020 */
 
+import Cookies.Set.DisjointSet;
 import Cookies.Tuple.Pair;
 import Cookies.Tuple.Triplet;
 
@@ -78,15 +79,6 @@ public class WeightedGraph<Symbol, Length> {
         edgeList.put(index, list);
         if (list.size() > 0) {
             for (Pair<Symbol, Length> element : list) {
-                vertexList.add(element.getKey());
-            }
-        }
-    }
-
-    public void replace(Symbol key, LinkedList<Pair<Symbol, Length>> value) {
-        edgeList.replace(key, value);
-        if (value.size() > 0) {
-            for (Pair<Symbol, Length> element : value) {
                 vertexList.add(element.getKey());
             }
         }
@@ -224,8 +216,14 @@ public class WeightedGraph<Symbol, Length> {
     }
     public Length kruskal() {
         Length total = lengthInterface.min();
-        HashSet<Symbol> visited = new HashSet<>();
         LinkedList<Triplet<Symbol, Symbol, Length>> list = new LinkedList<>();
+        Symbol[] nodes = (Symbol[]) new Object[vertexList.size()];
+        int j = -1;
+        for (Symbol element : vertexList) {
+            j++;
+            nodes[j] = element;
+        }
+        DisjointSet<Symbol> set = new DisjointSet<>(nodes);
         for (Symbol key : edgeList.keySet()) {
             for (int i = 0; i < edgeList.get(key).size(); i++) {
                 if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue()))) {
@@ -235,10 +233,9 @@ public class WeightedGraph<Symbol, Length> {
         }
         sort(list);
         for (Triplet<Symbol, Symbol, Length> tripletElement : list) {
-            if (!visited.contains(tripletElement.getA()) || !visited.contains(tripletElement.getB())) {
+            if (set.findSet(tripletElement.getA()) != set.findSet(tripletElement.getB())) {
+                set.union(tripletElement.getA(), tripletElement.getB());
                 total = lengthInterface.add(total, tripletElement.getC());
-                visited.add(tripletElement.getA());
-                visited.add(tripletElement.getB());
             }
         }
         return total;
