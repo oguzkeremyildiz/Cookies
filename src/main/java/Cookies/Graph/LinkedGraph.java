@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class LinkedGraph<Symbol> {
@@ -138,18 +138,12 @@ public class LinkedGraph<Symbol> {
     }
 
     /**
-     * A replace method puts another {@link java.util.LinkedList} in key.
-     * @param key Symbol input.
-     * @param value {@link java.util.LinkedList} input.
+     * A getValues
+     * @return {@link Graph}'s values.
      */
 
-    public void replace(Symbol key, LinkedList<Symbol> value) {
-        edgeList.replace(key, value);
-        if (value.size() > 0) {
-            for (Symbol element : value) {
-                vertexList.add(element);
-            }
-        }
+    public Collection<LinkedList<Symbol>> getValues() {
+        return edgeList.values();
     }
 
     /**
