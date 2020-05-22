@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.6
+ * @version 1.0.7
  */
 
 public class LinkedWeightedGraph<Symbol, Length> {
@@ -49,6 +49,10 @@ public class LinkedWeightedGraph<Symbol, Length> {
 
     public boolean containsValue(LinkedList<Pair<Symbol, Length>> list) {
         return edgeList.containsValue(list);
+    }
+
+    public boolean contains(Symbol element) {
+        return vertexList.contains(element);
     }
 
     public void addDirectedEdge(Symbol from, Symbol to, Length length) {
