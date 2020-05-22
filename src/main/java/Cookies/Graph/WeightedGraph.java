@@ -74,6 +74,10 @@ public class WeightedGraph<Symbol, Length> {
         return edgeList.keySet();
     }
 
+    public HashSet<Symbol> getVertexList() {
+        return vertexList;
+    }
+
     public int size() {
         return edgeList.size();
     }
