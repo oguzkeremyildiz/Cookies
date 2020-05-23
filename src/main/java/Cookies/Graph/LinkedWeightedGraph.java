@@ -274,4 +274,34 @@ public class LinkedWeightedGraph<Symbol, Length> {
             }
         }
     }
+
+    public LinkedList<LinkedWeightedGraph<Symbol, Length>> connectedComponents() {
+        LinkedList<LinkedWeightedGraph<Symbol, Length>> graphs = new LinkedList<>();
+        int i;
+        LinkedHashMap<Symbol, Boolean> visited = new LinkedHashMap<>();
+        for (Symbol vertex: vertexList) {
+            visited.put(vertex, false);
+        }
+        for (Symbol vertex: vertexList) {
+            if (!visited.get(vertex)) {
+                visited.put(vertex, true);
+                LinkedWeightedGraph<Symbol, Length> connectedComponent = new LinkedWeightedGraph<>(lengthInterface);
+                depthFirstSearch(connectedComponent, vertex, visited);
+                graphs.add(connectedComponent);
+            }
+        }
+        return graphs;
+    }
+
+    private void depthFirstSearch(LinkedWeightedGraph<Symbol, Length> connectedComponent, Symbol i, LinkedHashMap<Symbol, Boolean> visited) {
+        if (containsKey(i)) {
+            connectedComponent.put(i, get(i));
+            for (Pair<Symbol, Length> toNode : get(i)){
+                if (!visited.get(toNode.getKey())){
+                    visited.put(toNode.getKey(), true);
+                    depthFirstSearch(connectedComponent, toNode.getKey(), visited);
+                }
+            }
+        }
+    }
 }

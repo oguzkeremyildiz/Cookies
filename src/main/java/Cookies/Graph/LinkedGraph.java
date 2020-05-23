@@ -197,11 +197,13 @@ public class LinkedGraph<Symbol> {
      */
 
     private void depthFirstSearch(Graph<Symbol> connectedComponent, Symbol i, HashMap<Symbol, Boolean> visited) {
-        connectedComponent.put(i, get(i));
-        for (Symbol toNode : get(i)){
-            if (!visited.get(toNode)){
-                visited.put(toNode, true);
-                depthFirstSearch(connectedComponent, toNode, visited);
+        if (containsKey(i)) {
+            connectedComponent.put(i, get(i));
+            for (Symbol toNode : get(i)){
+                if (!visited.get(toNode)){
+                    visited.put(toNode, true);
+                    depthFirstSearch(connectedComponent, toNode, visited);
+                }
             }
         }
     }
