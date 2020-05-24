@@ -46,6 +46,16 @@ public class Graph<Symbol> {
     }
 
     /**
+     * A contains method which is the same as {@link java.util.HashSet}'s.
+     * @param element Symbol element.
+     * @return is control {@link Graph} for contains Symbol.
+     */
+
+    public boolean contains(Symbol element) {
+        return vertexList.contains(element);
+    }
+
+    /**
      * A isEmpty method which is the same as {@link java.util.HashMap}'s.
      * @return control are there any element in {@link Graph}.
      */
@@ -147,12 +157,21 @@ public class Graph<Symbol> {
     }
 
     /**
-     * A getKeySet get all {@link Graph}'s vertex.
+     * A getKeySet get all {@link Graph}'s edge.
      * @return edgeList's keySet.
      */
 
     public Set<Symbol> getKeySet() {
         return edgeList.keySet();
+    }
+
+    /**
+     * A getKeySet get all {@link Graph}'s vertex.
+     * @return vertexList.
+     */
+
+    public HashSet<Symbol> getVertexList() {
+        return vertexList;
     }
 
     /**
