@@ -1,5 +1,6 @@
 package Cookies.Set;/* Created by oguzkeremyildiz on 19.05.2020 */
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class LinkedDisjointSet<T> {
@@ -15,6 +16,16 @@ public class LinkedDisjointSet<T> {
         for (int i = 0; i < elements.length; i++) {
             map.put(elements[i], i);
             sets[i] = new Set<>(elements[i], i);
+        }
+    }
+
+    public LinkedDisjointSet(ArrayList<T> elements) {
+        map = new LinkedHashMap<>();
+        sets = new Set[elements.size()];
+        count = elements.size();
+        for (int i = 0; i < elements.size(); i++) {
+            map.put(elements.get(i), i);
+            sets[i] = new Set<>(elements.get(i), i);
         }
     }
 

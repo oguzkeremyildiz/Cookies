@@ -1,5 +1,6 @@
 package Cookies.Set;/* Created by oguzkeremyildiz on 19.05.2020 */
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,6 +13,16 @@ public class DisjointSet<T> {
    Set<T>[] sets;
    int count;
    private HashMap<T, Integer> map;
+
+   public DisjointSet(ArrayList<T> elements) {
+       map = new HashMap<>();
+       sets = new Set[elements.size()];
+       count = elements.size();
+       for (int i = 0; i < elements.size(); i++) {
+           map.put(elements.get(i), i);
+           sets[i] = new Set<>(elements.get(i), i);
+       }
+   }
 
    public DisjointSet(T[] elements) {
        map = new HashMap<>();
