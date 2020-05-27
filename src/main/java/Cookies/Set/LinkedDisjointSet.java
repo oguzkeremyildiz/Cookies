@@ -2,14 +2,22 @@ package Cookies.Set;/* Created by oguzkeremyildiz on 19.05.2020 */
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+
+/**
+ * @author oguzkeremyildiz
+ * @version 1.0.1
+ */
 
 public class LinkedDisjointSet<T> {
 
     Set<T>[] sets;
     int count;
     private LinkedHashMap<T, Integer> map;
+    private int size;
 
     public LinkedDisjointSet(T[] elements) {
+        size = elements.length;
         map = new LinkedHashMap<>();
         sets = new Set[elements.length];
         count = elements.length;
@@ -19,7 +27,8 @@ public class LinkedDisjointSet<T> {
         }
     }
 
-    public LinkedDisjointSet(ArrayList<T> elements) {
+    public LinkedDisjointSet(LinkedList<T> elements) {
+        size = elements.size();
         map = new LinkedHashMap<>();
         sets = new Set[elements.size()];
         count = elements.size();
@@ -27,6 +36,21 @@ public class LinkedDisjointSet<T> {
             map.put(elements.get(i), i);
             sets[i] = new Set<>(elements.get(i), i);
         }
+    }
+
+    public LinkedDisjointSet(ArrayList<T> elements) {
+        size = elements.size();
+        map = new LinkedHashMap<>();
+        sets = new Set[elements.size()];
+        count = elements.size();
+        for (int i = 0; i < elements.size(); i++) {
+            map.put(elements.get(i), i);
+            sets[i] = new Set<>(elements.get(i), i);
+        }
+    }
+
+    public int size() {
+        return size;
     }
 
     public int findSet(int index) {

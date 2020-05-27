@@ -2,10 +2,12 @@ package Cookies.Set;/* Created by oguzkeremyildiz on 19.05.2020 */
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author olcaytaner
- * @version 1.0.0
+ * @author oguzkeremyildiz
+ * @version 1.0.1
  */
 
 public class DisjointSet<T> {
@@ -13,8 +15,10 @@ public class DisjointSet<T> {
    Set<T>[] sets;
    int count;
    private HashMap<T, Integer> map;
+   private int size;
 
    public DisjointSet(ArrayList<T> elements) {
+       size = elements.size();
        map = new HashMap<>();
        sets = new Set[elements.size()];
        count = elements.size();
@@ -24,7 +28,19 @@ public class DisjointSet<T> {
        }
    }
 
+    public DisjointSet(LinkedList<T> elements) {
+       size = elements.size();
+        map = new HashMap<>();
+        sets = new Set[elements.size()];
+        count = elements.size();
+        for (int i = 0; i < elements.size(); i++) {
+            map.put(elements.get(i), i);
+            sets[i] = new Set<>(elements.get(i), i);
+        }
+    }
+
    public DisjointSet(T[] elements) {
+       size = elements.length;
        map = new HashMap<>();
        sets = new Set[elements.length];
        count = elements.length;
@@ -32,6 +48,10 @@ public class DisjointSet<T> {
            map.put(elements[i], i);
            sets[i] = new Set<>(elements[i], i);
        }
+   }
+
+   public int size() {
+       return size;
    }
 
    public int findSet(int index) {
