@@ -10,11 +10,13 @@ public class Edge<E> {
     private E capacity;
     private E flow;
     private E residual;
+    private LengthInterface<E> lengthInterface;
 
-    public Edge(E capacity, E flow, E residual) {
+    public Edge(E capacity, LengthInterface<E> lengthInterface) {
         this.capacity = capacity;
-        this.flow = flow;
-        this.residual = residual;
+        this.lengthInterface = lengthInterface;
+        flow = lengthInterface.min();
+        residual = capacity;
     }
 
     public E getCapacity() {
@@ -27,5 +29,14 @@ public class Edge<E> {
 
     public E getResidual() {
         return residual;
+    }
+
+    public void setFlow(E flow) {
+        this.flow = flow;
+        setResidual(lengthInterface.remove(getCapacity(), getFlow()));
+    }
+
+    private void setResidual(E residual) {
+        this.residual = residual;
     }
 }
