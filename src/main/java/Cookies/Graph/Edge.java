@@ -2,7 +2,7 @@ package Cookies.Graph;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 public class Edge<E> {
@@ -17,6 +17,13 @@ public class Edge<E> {
         this.lengthInterface = lengthInterface;
         flow = lengthInterface.min();
         residual = capacity;
+    }
+
+    public Edge(E capacity, E residual, LengthInterface<E> lengthInterface) {
+        this.capacity = capacity;
+        this.residual = residual;
+        flow = lengthInterface.remove(capacity, residual);
+        this.lengthInterface = lengthInterface;
     }
 
     public E getCapacity() {
