@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.7
+ * @version 1.0.8
  */
 
 public class WeightedGraph<Symbol, Length> {
@@ -224,7 +224,7 @@ public class WeightedGraph<Symbol, Length> {
             }
         }
     }
-    public void printShortestPath(Symbol key) {
+    public void printShortestPathBellmanFord(Symbol key) {
         HashMap<Symbol, Pair<Length, Symbol>> map = this.bellmanFord(key);
         for (Symbol element : map.keySet()) {
             System.out.println(key + " -> " + element + " = " + map.get(element));
@@ -265,6 +265,59 @@ public class WeightedGraph<Symbol, Length> {
                     list.set(j, tmp);
                 }
             }
+        }
+    }
+    public HashMap<Symbol, Pair<Length, Symbol>> dijkstra(Symbol edge) {
+        HashSet<Symbol> visited = new HashSet<>();
+        HashMap<Symbol, Pair<Length, Symbol>> map = new HashMap<>();
+        visited.add(edge);
+        for (Symbol element : vertexList) {
+            if (edge.equals(element)) {
+                map.put(element, new Pair<>(lengthInterface.min(), edge));
+            } else if (containsElement(edge, element).getKey()) {
+                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue(), edge));
+            } else {
+                map.put(element, new Pair<>(lengthInterface.max(), null));
+            }
+        }
+        for (int i = 0; i < vertexList.size() - 1; i++) {
+            Symbol key = findMinimum(visited, map);
+            visited.add(key);
+            if (containsKey(key)) {
+                for (int j = 0; j < get(key).size(); j++) {
+                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue()), map.get(get(key, j).getKey()).getKey()) < 0) {
+                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue()), key));
+                    }
+                }
+            }
+        }
+        return map;
+    }
+    private Symbol findMinimum(HashSet<Symbol> visited, HashMap<Symbol, Pair<Length, Symbol>> map) {
+        Symbol element = null;
+        Length length = lengthInterface.max();
+        for (Symbol key : map.keySet()) {
+            if (!visited.contains(key)) {
+                if (lengthInterface.compare(length, map.get(key).getKey()) > 0) {
+                    length = map.get(key).getKey();
+                    element = key;
+                }
+            }
+        }
+        return element;
+    }
+    private Pair<Boolean, Integer> containsElement(Symbol edge, Symbol element) {
+        for (int i = 0; i < get(edge).size(); i++) {
+            if (get(edge, i).getKey().equals(element)) {
+                return new Pair<>(true, i);
+            }
+        }
+        return new Pair<>(false, -1);
+    }
+    public void printShortestDijkstra(Symbol key) {
+        HashMap<Symbol, Pair<Length, Symbol>> map = this.dijkstra(key);
+        for (Symbol element : map.keySet()) {
+            System.out.println(key + " -> " + element + " = " + map.get(element));
         }
     }
     public LinkedList<WeightedGraph<Symbol, Length>> connectedComponents() {
