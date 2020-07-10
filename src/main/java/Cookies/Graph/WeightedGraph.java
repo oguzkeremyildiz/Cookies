@@ -323,7 +323,7 @@ public class WeightedGraph<Symbol, Length> {
         return new Pair<>(false, -1);
     }
 
-    public void printShortestDijkstra(Symbol key) {
+    public void printShortestPathDijkstra(Symbol key) {
         HashMap<Symbol, Pair<Length, Symbol>> map = this.dijkstra(key);
         for (Symbol element : map.keySet()) {
             System.out.println(key + " -> " + element + " = " + map.get(element));
