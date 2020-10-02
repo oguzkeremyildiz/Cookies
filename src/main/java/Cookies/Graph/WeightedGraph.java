@@ -234,6 +234,33 @@ public class WeightedGraph<Symbol, Length> {
         }
     }
 
+    public Length prims() {
+        Length total = lengthInterface.min();
+        HashSet<Symbol> elements = new HashSet<>();
+        for (Symbol element : vertexList) {
+            elements.add(element);
+            break;
+        }
+        while (!elements.containsAll(vertexList)) {
+            Symbol edge = null;
+            Length minimum = lengthInterface.max();
+            for (Symbol element : elements) {
+                for (int i = 0; i < get(element).size(); i++) {
+                    Pair<Symbol, Length> pair = get(element, i);
+                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue(), minimum) < 0) {
+                        minimum = pair.getValue();
+                        edge = pair.getKey();
+                    }
+                }
+            }
+            if (edge != null) {
+                elements.add(edge);
+                total = lengthInterface.add(total, minimum);
+            }
+        }
+        return total;
+    }
+
     public Length kruskal() {
         Length total = lengthInterface.min();
         LinkedList<Triplet<Symbol, Symbol, Length>> list = new LinkedList<>();
