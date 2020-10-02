@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.8
+ * @version 1.0.9
  */
 
 public class LinkedWeightedGraph<Symbol, Length> {
@@ -234,6 +234,33 @@ public class LinkedWeightedGraph<Symbol, Length> {
         for (Symbol element : map.keySet()) {
             System.out.println(key + " -> " + element + " = " + map.get(element));
         }
+    }
+
+    public Length prims() {
+        Length total = lengthInterface.min();
+        LinkedHashSet<Symbol> elements = new LinkedHashSet<>();
+        for (Symbol element : vertexList) {
+            elements.add(element);
+            break;
+        }
+        while (!elements.containsAll(vertexList)) {
+            Symbol edge = null;
+            Length minimum = lengthInterface.max();
+            for (Symbol element : elements) {
+                for (int i = 0; i < get(element).size(); i++) {
+                    Pair<Symbol, Length> pair = get(element, i);
+                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue(), minimum) < 0) {
+                        minimum = pair.getValue();
+                        edge = pair.getKey();
+                    }
+                }
+            }
+            if (edge != null) {
+                elements.add(edge);
+                total = lengthInterface.add(total, minimum);
+            }
+        }
+        return total;
     }
 
     public Length kruskal() {

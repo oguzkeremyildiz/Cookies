@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.8
+ * @version 1.0.9
  */
 
 public class WeightedGraph<Symbol, Length> {
