@@ -2,15 +2,21 @@ package Cookies.Graph;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 public class Edge<E> {
 
-    private E capacity;
+    private final E capacity;
     private E flow;
     private E residual;
     private LengthInterface<E> lengthInterface;
+
+    public Edge(E capacity) {
+        this.capacity = capacity;
+        this.flow = null;
+        this.residual = null;
+    }
 
     public Edge(E capacity, LengthInterface<E> lengthInterface) {
         this.capacity = capacity;

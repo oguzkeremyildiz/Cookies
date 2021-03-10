@@ -6,7 +6,15 @@
 
     <groupId>io.github.oguzkeremyildiz</groupId>
     <artifactId>Cookies</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <name>Cookies</name>
     <description>Java library</description>
