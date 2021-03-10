@@ -7,7 +7,7 @@ import org.junit.Test;
 public class WeightedGraphTest {
 
     @Test
-    public void testKruskal() {
+    public void testSpanningTrees() {
         WeightedGraph<String, Integer> graph = new WeightedGraph<>(new IntegerLength());
         graph.addUndirectedEdge("a", "b", new Edge<>(2));
         graph.addUndirectedEdge("a", "c", new Edge<>(3));
@@ -21,5 +21,6 @@ public class WeightedGraphTest {
         graph.addUndirectedEdge("f", "c", new Edge<>(3));
         graph.addUndirectedEdge("f", "e", new Edge<>(3));
         Assert.assertEquals(java.util.Optional.ofNullable(graph.kruskal()), java.util.Optional.of(14));
+        Assert.assertEquals(java.util.Optional.ofNullable(graph.prims()), java.util.Optional.of(14));
     }
 }

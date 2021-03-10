@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 public class WeightedGraph<Symbol, Length> {
@@ -60,12 +60,33 @@ public class WeightedGraph<Symbol, Length> {
         }
     }
 
+    public void addDirectedEdge(Symbol from, Symbol to, Length length) {
+        vertexList.add(from);
+        vertexList.add(to);
+        if (!edgeList.containsKey(from)){
+            edgeList.put(from, new LinkedList<>());
+            edgeList.get(from).addFirst(new Pair<>(to, new Edge<>(length)));
+        } else {
+            edgeList.get(from).add(new Pair<>(to, new Edge<>(length)));
+        }
+    }
+
     public void addUndirectedEdge(Symbol from, Symbol to, Edge<Length> length) {
         addDirectedEdge(from, to, length);
         addDirectedEdge(to, from, length);
     }
 
+    public void addUndirectedEdge(Symbol from, Symbol to, Length length) {
+        addDirectedEdge(from, to, length);
+        addDirectedEdge(to, from, length);
+    }
+
     public void addUndirectedEdge(Symbol from, Symbol to, Edge<Length> lengthFrom, Edge<Length> lengthTo) {
+        addDirectedEdge(from, to, lengthTo);
+        addDirectedEdge(to, from, lengthFrom);
+    }
+
+    public void addUndirectedEdge(Symbol from, Symbol to, Length lengthFrom, Length lengthTo) {
         addDirectedEdge(from, to, lengthTo);
         addDirectedEdge(to, from, lengthFrom);
     }

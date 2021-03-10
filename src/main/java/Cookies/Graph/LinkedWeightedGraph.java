@@ -8,11 +8,11 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.9
+ * @version 1.1.0
  */
 
 public class LinkedWeightedGraph<Symbol, Length> {
-    private LinkedHashMap<Symbol, LinkedList<Pair<Symbol, Length>>> edgeList;
+    private LinkedHashMap<Symbol, LinkedList<Pair<Symbol, Edge<Length>>>> edgeList;
     private LinkedHashSet<Symbol> vertexList;
     private LengthInterface<Length> lengthInterface;
 
@@ -33,8 +33,8 @@ public class LinkedWeightedGraph<Symbol, Length> {
         vertexList.clear();
     }
 
-    public LinkedList<Pair<Symbol, Length>> getFirst() {
-        Map.Entry<Symbol, LinkedList<Pair<Symbol, Length>>> entry = edgeList.entrySet().iterator().next();
+    public LinkedList<Pair<Symbol, Edge<Length>>> getFirst() {
+        Map.Entry<Symbol, LinkedList<Pair<Symbol, Edge<Length>>>> entry = edgeList.entrySet().iterator().next();
         Symbol key = entry.getKey();
         return edgeList.get(key);
     }
@@ -55,7 +55,7 @@ public class LinkedWeightedGraph<Symbol, Length> {
         return vertexList.contains(element);
     }
 
-    public void addDirectedEdge(Symbol from, Symbol to, Length length) {
+    public void addDirectedEdge(Symbol from, Symbol to, Edge<Length> length) {
         vertexList.add(from);
         vertexList.add(to);
         if (!edgeList.containsKey(from)){
@@ -63,6 +63,17 @@ public class LinkedWeightedGraph<Symbol, Length> {
             edgeList.get(from).addFirst(new Pair<>(to, length));
         } else {
             edgeList.get(from).add(new Pair<>(to, length));
+        }
+    }
+
+    public void addDirectedEdge(Symbol from, Symbol to, Length length) {
+        vertexList.add(from);
+        vertexList.add(to);
+        if (!edgeList.containsKey(from)){
+            edgeList.put(from, new LinkedList<>());
+            edgeList.get(from).addFirst(new Pair<>(to, new Edge<>(length)));
+        } else {
+            edgeList.get(from).add(new Pair<>(to, new Edge<>(length)));
         }
     }
 
@@ -84,21 +95,21 @@ public class LinkedWeightedGraph<Symbol, Length> {
         return edgeList.size();
     }
 
-    public void put(Symbol index, LinkedList<Pair<Symbol, Length>> list) {
+    public void put(Symbol index, LinkedList<Pair<Symbol, Edge<Length>>> list) {
         vertexList.add(index);
         edgeList.put(index, list);
         if (list.size() > 0) {
-            for (Pair<Symbol, Length> element : list) {
+            for (Pair<Symbol, Edge<Length>> element : list) {
                 vertexList.add(element.getKey());
             }
         }
     }
 
-    public LinkedList<Pair<Symbol, Length>> get(Symbol index) {
+    public LinkedList<Pair<Symbol, Edge<Length>>> get(Symbol index) {
         return edgeList.get(index);
     }
 
-    public Pair<Symbol, Length> get(Symbol element, int index) {
+    public Pair<Symbol, Edge<Length>> get(Symbol element, int index) {
         return edgeList.get(element).get(index);
     }
 
@@ -114,10 +125,10 @@ public class LinkedWeightedGraph<Symbol, Length> {
             for (Symbol key : map.keySet()) {
                 if (this.containsKey(key)) {
                     for (int i = 0; i < this.get(key).size(); i++) {
-                        Pair<Symbol, Length> element = this.get(key).get(i);
+                        Pair<Symbol, Edge<Length>> element = this.get(key).get(i);
                         if (!map.get(key).getKey().equals(lengthInterface.max())) {
-                            if (lengthInterface.compare(map.get(element.getKey()).getKey(), lengthInterface.add(element.getValue(), map.get(key).getKey())) > 0) {
-                                map.put(element.getKey(), new Pair<>(lengthInterface.add(element.getValue(), map.get(key).getKey()), key));
+                            if (lengthInterface.compare(map.get(element.getKey()).getKey(), lengthInterface.add(element.getValue().getCapacity(), map.get(key).getKey())) > 0) {
+                                map.put(element.getKey(), new Pair<>(lengthInterface.add(element.getValue().getCapacity(), map.get(key).getKey()), key));
                             }
                         }
                     }
@@ -151,7 +162,7 @@ public class LinkedWeightedGraph<Symbol, Length> {
         }
         for (Symbol key : this.getKeySet()) {
             for (int k = 0; k < this.get(key).size(); k++) {
-                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue());
+                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getCapacity());
             }
         }
         for (int j = 0; j < vertexList.size(); j++) {
@@ -193,7 +204,7 @@ public class LinkedWeightedGraph<Symbol, Length> {
         }
         for (Symbol key : this.getKeySet()) {
             for (int k = 0; k < this.get(key).size(); k++) {
-                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue());
+                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getCapacity());
             }
         }
         for (int j = 0; j < vertexList.size(); j++) {
@@ -248,9 +259,9 @@ public class LinkedWeightedGraph<Symbol, Length> {
             Length minimum = lengthInterface.max();
             for (Symbol element : elements) {
                 for (int i = 0; i < get(element).size(); i++) {
-                    Pair<Symbol, Length> pair = get(element, i);
-                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue(), minimum) < 0) {
-                        minimum = pair.getValue();
+                    Pair<Symbol, Edge<Length>> pair = get(element, i);
+                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue().getCapacity(), minimum) < 0) {
+                        minimum = pair.getValue().getCapacity();
                         edge = pair.getKey();
                     }
                 }
@@ -275,8 +286,8 @@ public class LinkedWeightedGraph<Symbol, Length> {
         LinkedDisjointSet<Symbol> set = new LinkedDisjointSet<>(nodes);
         for (Symbol key : edgeList.keySet()) {
             for (int i = 0; i < edgeList.get(key).size(); i++) {
-                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue()))) {
-                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue()));
+                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue().getCapacity()))) {
+                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue().getCapacity()));
                 }
             }
         }
@@ -310,7 +321,7 @@ public class LinkedWeightedGraph<Symbol, Length> {
             if (edge.equals(element)) {
                 map.put(element, new Pair<>(lengthInterface.min(), edge));
             } else if (containsElement(edge, element).getKey()) {
-                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue(), edge));
+                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue().getCapacity(), edge));
             } else {
                 map.put(element, new Pair<>(lengthInterface.max(), null));
             }
@@ -320,8 +331,8 @@ public class LinkedWeightedGraph<Symbol, Length> {
             visited.add(key);
             if (containsKey(key)) {
                 for (int j = 0; j < get(key).size(); j++) {
-                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue()), map.get(get(key, j).getKey()).getKey()) < 0) {
-                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue()), key));
+                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getCapacity()), map.get(get(key, j).getKey()).getKey()) < 0) {
+                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getCapacity()), key));
                     }
                 }
             }
@@ -380,7 +391,7 @@ public class LinkedWeightedGraph<Symbol, Length> {
     private void depthFirstSearch(LinkedWeightedGraph<Symbol, Length> connectedComponent, Symbol i, LinkedHashMap<Symbol, Boolean> visited) {
         if (containsKey(i)) {
             connectedComponent.put(i, get(i));
-            for (Pair<Symbol, Length> toNode : get(i)){
+            for (Pair<Symbol, Edge<Length>> toNode : get(i)){
                 if (!visited.get(toNode.getKey())){
                     visited.put(toNode.getKey(), true);
                     depthFirstSearch(connectedComponent, toNode.getKey(), visited);
