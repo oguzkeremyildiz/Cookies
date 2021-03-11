@@ -83,5 +83,25 @@ public class WeightedGraphTest {
         graph.addDirectedEdge("d", "c", new Edge<>(8, new IntegerLength()));
         graph.addDirectedEdge("d", "t", new Edge<>(7, new IntegerLength()));
         Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("s", "t")), java.util.Optional.of(12));
+        graph.clear();
+        graph.addDirectedEdge("s", "0", new Edge<>(7, new IntegerLength()));
+        graph.addDirectedEdge("s", "1", new Edge<>(2, new IntegerLength()));
+        graph.addDirectedEdge("s", "2", new Edge<>(1, new IntegerLength()));
+        graph.addDirectedEdge("0", "3", new Edge<>(2, new IntegerLength()));
+        graph.addDirectedEdge("0", "4", new Edge<>(4, new IntegerLength()));
+        graph.addDirectedEdge("1", "4", new Edge<>(5, new IntegerLength()));
+        graph.addDirectedEdge("1", "5", new Edge<>(6, new IntegerLength()));
+        graph.addDirectedEdge("2", "3", new Edge<>(4, new IntegerLength()));
+        graph.addDirectedEdge("2", "7", new Edge<>(8, new IntegerLength()));
+        graph.addDirectedEdge("3", "6", new Edge<>(7, new IntegerLength()));
+        graph.addDirectedEdge("3", "7", new Edge<>(1, new IntegerLength()));
+        graph.addDirectedEdge("4", "5", new Edge<>(8, new IntegerLength()));
+        graph.addDirectedEdge("4", "6", new Edge<>(3, new IntegerLength()));
+        graph.addDirectedEdge("4", "8", new Edge<>(3, new IntegerLength()));
+        graph.addDirectedEdge("5", "8", new Edge<>(3, new IntegerLength()));
+        graph.addDirectedEdge("6", "t", new Edge<>(1, new IntegerLength()));
+        graph.addDirectedEdge("7", "t", new Edge<>(3, new IntegerLength()));
+        graph.addDirectedEdge("8", "t", new Edge<>(4, new IntegerLength()));
+        Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("s", "t")), java.util.Optional.of(7));
     }
 }
