@@ -6,4 +6,5 @@ public interface LengthInterface<Length> {
     Length max();
     Length add(Length length1, Length length2);
     Length remove(Length length1, Length length2);
+    Length min(Length length1, Length length2);
 }

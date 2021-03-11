@@ -46,4 +46,19 @@ public class WeightedGraphTest {
         Assert.assertEquals(graph.dijkstra("a"), actual);
         Assert.assertEquals(graph.bellmanFord("a"), actual);
     }
+
+    @Test
+    public void testFordFulkerson() {
+        WeightedGraph<String, Integer> graph = new WeightedGraph<>(new IntegerLength());
+        graph.addDirectedEdge("s", "a", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("s", "c", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("a", "d", new Edge<>(8, new IntegerLength()));
+        graph.addDirectedEdge("d", "t", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("a", "b", new Edge<>(4, new IntegerLength()));
+        graph.addDirectedEdge("a", "c", new Edge<>(2, new IntegerLength()));
+        graph.addDirectedEdge("c", "d", new Edge<>(9, new IntegerLength()));
+        graph.addDirectedEdge("b", "t", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("d", "b", new Edge<>(6, new IntegerLength()));
+        Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("s", "t")), java.util.Optional.of(19));
+    }
 }

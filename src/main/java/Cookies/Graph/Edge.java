@@ -52,4 +52,9 @@ public class Edge<E> {
     private void setResidual(E residual) {
         this.residual = residual;
     }
+
+    @Override
+    public String toString() {
+        return "[capacity = " + capacity.toString() + ",flow = " + flow.toString() + ",residual = " + residual.toString() + "]";
+    }
 }

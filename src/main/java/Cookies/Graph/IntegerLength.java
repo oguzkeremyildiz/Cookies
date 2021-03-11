@@ -25,4 +25,9 @@ public class IntegerLength implements LengthInterface<Integer>{
     public Integer remove(Integer length1, Integer length2) {
         return length1 - length2;
     }
+
+    @Override
+    public Integer min(Integer length1, Integer length2) {
+        return Math.min(length1, length2);
+    }
 }
