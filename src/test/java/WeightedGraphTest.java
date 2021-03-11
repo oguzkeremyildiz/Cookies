@@ -60,5 +60,28 @@ public class WeightedGraphTest {
         graph.addDirectedEdge("b", "t", new Edge<>(10, new IntegerLength()));
         graph.addDirectedEdge("d", "b", new Edge<>(6, new IntegerLength()));
         Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("s", "t")), java.util.Optional.of(19));
+        graph.clear();
+        graph.addDirectedEdge("0", "1", new Edge<>(16, new IntegerLength()));
+        graph.addDirectedEdge("0", "2", new Edge<>(13, new IntegerLength()));
+        graph.addDirectedEdge("1", "2", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("2", "1", new Edge<>(4, new IntegerLength()));
+        graph.addDirectedEdge("2", "4", new Edge<>(14, new IntegerLength()));
+        graph.addDirectedEdge("1", "3", new Edge<>(12, new IntegerLength()));
+        graph.addDirectedEdge("3", "2", new Edge<>(9, new IntegerLength()));
+        graph.addDirectedEdge("3", "5", new Edge<>(20, new IntegerLength()));
+        graph.addDirectedEdge("4", "3", new Edge<>(7, new IntegerLength()));
+        graph.addDirectedEdge("4", "5", new Edge<>(4, new IntegerLength()));
+        Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("0", "5")), java.util.Optional.of(23));
+        graph.clear();
+        graph.addDirectedEdge("s", "a", new Edge<>(9, new IntegerLength()));
+        graph.addDirectedEdge("s", "b", new Edge<>(9, new IntegerLength()));
+        graph.addDirectedEdge("a", "b", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("a", "c", new Edge<>(8, new IntegerLength()));
+        graph.addDirectedEdge("b", "c", new Edge<>(1, new IntegerLength()));
+        graph.addDirectedEdge("b", "d", new Edge<>(3, new IntegerLength()));
+        graph.addDirectedEdge("c", "t", new Edge<>(10, new IntegerLength()));
+        graph.addDirectedEdge("d", "c", new Edge<>(8, new IntegerLength()));
+        graph.addDirectedEdge("d", "t", new Edge<>(7, new IntegerLength()));
+        Assert.assertEquals(java.util.Optional.ofNullable(graph.fordFulkerson("s", "t")), java.util.Optional.of(12));
     }
 }
