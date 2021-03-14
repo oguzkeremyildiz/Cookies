@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * @author oguzkeremyildiz
- * @version 1.1.2
+ * @version 1.1.3
  */
 
 public class WeightedGraph<Symbol, Length> {
@@ -135,8 +135,8 @@ public class WeightedGraph<Symbol, Length> {
                     for (int i = 0; i < this.get(key).size(); i++) {
                         Pair<Symbol, Edge<Length>> element = this.get(key).get(i);
                         if (!map.get(key).getKey().equals(lengthInterface.max())) {
-                            if (lengthInterface.compare(map.get(element.getKey()).getKey(), lengthInterface.add(element.getValue().getCapacity(), map.get(key).getKey())) > 0) {
-                                map.put(element.getKey(), new Pair<>(lengthInterface.add(element.getValue().getCapacity(), map.get(key).getKey()), key));
+                            if (lengthInterface.compare(map.get(element.getKey()).getKey(), lengthInterface.add(element.getValue().getLength(), map.get(key).getKey())) > 0) {
+                                map.put(element.getKey(), new Pair<>(lengthInterface.add(element.getValue().getLength(), map.get(key).getKey()), key));
                             }
                         }
                     }
@@ -170,7 +170,7 @@ public class WeightedGraph<Symbol, Length> {
         }
         for (Symbol key : this.getKeySet()) {
             for (int k = 0; k < this.get(key).size(); k++) {
-                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getCapacity());
+                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getLength());
             }
         }
         for (int j = 0; j < vertexList.size(); j++) {
@@ -212,7 +212,7 @@ public class WeightedGraph<Symbol, Length> {
         }
         for (Symbol key : this.getKeySet()) {
             for (int k = 0; k < this.get(key).size(); k++) {
-                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getCapacity());
+                array.get(map.get(key)).set(map.get(this.get(key).get(k).getKey()), this.get(key).get(k).getValue().getLength());
             }
         }
         for (int j = 0; j < vertexList.size(); j++) {
@@ -268,8 +268,8 @@ public class WeightedGraph<Symbol, Length> {
             for (Symbol element : elements) {
                 for (int i = 0; i < get(element).size(); i++) {
                     Pair<Symbol, Edge<Length>> pair = get(element, i);
-                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue().getCapacity(), minimum) < 0) {
-                        minimum = pair.getValue().getCapacity();
+                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue().getLength(), minimum) < 0) {
+                        minimum = pair.getValue().getLength();
                         edge = pair.getKey();
                     }
                 }
@@ -294,8 +294,8 @@ public class WeightedGraph<Symbol, Length> {
         DisjointSet<Symbol> set = new DisjointSet<>(nodes);
         for (Symbol key : edgeList.keySet()) {
             for (int i = 0; i < edgeList.get(key).size(); i++) {
-                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue().getCapacity()))) {
-                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue().getCapacity()));
+                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue().getLength()))) {
+                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue().getLength()));
                 }
             }
         }
@@ -329,7 +329,7 @@ public class WeightedGraph<Symbol, Length> {
             if (edge.equals(element)) {
                 map.put(element, new Pair<>(lengthInterface.min(), edge));
             } else if (containsElement(edge, element).getKey()) {
-                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue().getCapacity(), edge));
+                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue().getLength(), edge));
             } else {
                 map.put(element, new Pair<>(lengthInterface.max(), null));
             }
@@ -339,8 +339,8 @@ public class WeightedGraph<Symbol, Length> {
             visited.add(key);
             if (containsKey(key)) {
                 for (int j = 0; j < get(key).size(); j++) {
-                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getCapacity()), map.get(get(key, j).getKey()).getKey()) < 0) {
-                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getCapacity()), key));
+                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getLength()), map.get(get(key, j).getKey()).getKey()) < 0) {
+                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getLength()), key));
                     }
                 }
             }
@@ -400,7 +400,7 @@ public class WeightedGraph<Symbol, Length> {
         for (Symbol key : edgeList.keySet()) {
             for (int i = 0; i < edgeList.get(key).size(); i++) {
                 if (!containsTo(edgeList.get(key).get(i).getKey(), key)) {
-                    Edge<Length> edge = new Edge<>(edgeList.get(key).get(i).getValue().getCapacity(), lengthInterface.min(), lengthInterface);
+                    ResidualEdge<Length> edge = new ResidualEdge<>(edgeList.get(key).get(i).getValue().getLength(), lengthInterface.min(), lengthInterface);
                     list.add(new Pair<>(edgeList.get(key).get(i).getKey(), new Pair<>(key, edge)));
                 }
             }
@@ -440,11 +440,11 @@ public class WeightedGraph<Symbol, Length> {
             if (containsKey(nodes.get(i))) {
                 for (int j = 0; j < get(nodes.get(i)).size(); j++) {
                     if (get(nodes.get(i), j).getKey().equals(nodes.get(i + 1))) {
-                        get(nodes.get(i), j).getValue().setFlow(lengthInterface.add(get(nodes.get(i), j).getValue().getFlow(), min));
+                        ((ResidualEdge<Length>) get(nodes.get(i), j).getValue()).setFlow(lengthInterface.add(((ResidualEdge<Length>) get(nodes.get(i), j).getValue()).getFlow(), min));
                         if (containsKey(nodes.get(i + 1))) {
                             for (int k = 0; k < get(nodes.get(i + 1)).size(); k++) {
                                 if (get(nodes.get(i + 1), k).getKey().equals(nodes.get(i))) {
-                                    get(nodes.get(i + 1), k).getValue().setFlow(lengthInterface.remove(get(nodes.get(i + 1), k).getValue().getCapacity(), get(nodes.get(i), j).getValue().getFlow()));
+                                    ((ResidualEdge<Length>) get(nodes.get(i + 1), k).getValue()).setFlow(lengthInterface.remove(get(nodes.get(i + 1), k).getValue().getLength(), ((ResidualEdge<Length>) get(nodes.get(i), j).getValue()).getFlow()));
                                 }
                             }
                         }
@@ -460,12 +460,12 @@ public class WeightedGraph<Symbol, Length> {
                 return min;
             }
             Symbol node = get(current, i).getKey();
-            if (!nodes.contains(node) && lengthInterface.compare(get(current, i).getValue().getResidual(), lengthInterface.min()) > 0) {
+            if (!nodes.contains(node) && lengthInterface.compare(((ResidualEdge<Length>) get(current, i).getValue()).getResidual(), lengthInterface.min()) > 0) {
                 nodes.add(node);
                 if (nodes.contains(sink)) {
-                    return lengthInterface.min(min, get(current, i).getValue().getResidual());
+                    return lengthInterface.min(min, ((ResidualEdge<Length>) get(current, i).getValue()).getResidual());
                 }
-                min = lengthInterface.min(min, depthFirstSearch(nodes, node, lengthInterface.min(min, get(current, i).getValue().getResidual()), sink));
+                min = lengthInterface.min(min, depthFirstSearch(nodes, node, lengthInterface.min(min, ((ResidualEdge<Length>) get(current, i).getValue()).getResidual()), sink));
                 if (!nodes.contains(sink)) {
                     nodes.removeLast();
                 }
