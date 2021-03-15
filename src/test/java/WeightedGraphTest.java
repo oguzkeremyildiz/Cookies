@@ -7,8 +7,53 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class WeightedGraphTest {
+
+    private int findIndex(WeightedGraph<String, Integer> graph, LinkedList<WeightedGraph<String, Integer>> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getVertexList().equals(graph.getVertexList())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Test
+    public void testConnectedComponents() {
+        WeightedGraph<String, Integer> graph = new WeightedGraph<>(new IntegerLength());
+        graph.addDirectedEdge("1", "2", 3);
+        graph.addDirectedEdge("2", "3", 5);
+        graph.addDirectedEdge("2", "4", 4);
+        graph.addDirectedEdge("5", "6", 2);
+        graph.addDirectedEdge("9", "7", 4);
+        graph.addDirectedEdge("5", "9", 2);
+        graph.addDirectedEdge("11", "12", 5);
+        graph.addDirectedEdge("11", "13", 8);
+        LinkedList<WeightedGraph<String, Integer>> graphs = graph.connectedComponents();
+        LinkedList<WeightedGraph<String, Integer>> expectation = new LinkedList<>();
+        WeightedGraph<String, Integer> g1 = new WeightedGraph<>(new IntegerLength());
+        g1.addDirectedEdge("1", "2", 3);
+        g1.addDirectedEdge("2", "3", 5);
+        g1.addDirectedEdge("2", "4", 4);
+        expectation.add(g1);
+        WeightedGraph<String, Integer> g2 = new WeightedGraph<>(new IntegerLength());
+        g2.addDirectedEdge("5", "6", 2);
+        g2.addDirectedEdge("9", "7", 4);
+        g2.addDirectedEdge("5", "9", 2);
+        expectation.add(g2);
+        WeightedGraph<String, Integer> g3 = new WeightedGraph<>(new IntegerLength());
+        g3.addDirectedEdge("11", "12", 5);
+        g3.addDirectedEdge("11", "13", 8);
+        expectation.add(g3);
+        for (WeightedGraph<String, Integer> weightedGraph : graphs) {
+            int j = findIndex(weightedGraph, expectation);
+            for (String key : weightedGraph.getKeySet()) {
+                Assert.assertEquals(weightedGraph.get(key), expectation.get(j).get(key));
+            }
+        }
+    }
 
     @Test
     public void testSpanningTrees() {

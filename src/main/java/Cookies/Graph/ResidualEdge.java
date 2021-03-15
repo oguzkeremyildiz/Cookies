@@ -2,7 +2,7 @@ package Cookies.Graph;/* Created by oguzkeremyildiz on 14.03.2021 */
 
 /**
  * @author oguzkeremyildiz
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 public class ResidualEdge<E> extends Edge<E> {
@@ -40,5 +40,19 @@ public class ResidualEdge<E> extends Edge<E> {
 
     private void setResidual(E residual) {
         this.residual = residual;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if ((obj instanceof ResidualEdge)) {
+            return false;
+        }
+        ResidualEdge<E> edge = (ResidualEdge<E>) obj;
+        return this.length.equals(edge.length) && this.flow.equals(edge.flow) && this.residual.equals(edge.residual);
+    }
+
+    @Override
+    public String toString() {
+        return "[capacity = " + this.length.toString() + ", flow = " + this.flow.toString() + ", residual = " + this.residual.toString() + "]";
     }
 }
