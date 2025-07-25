@@ -432,7 +432,13 @@ public class WeightedGraph<Symbol, Length> {
     }
 
     private void removeEdge(Pair<Symbol, Pair<Symbol, Edge<Length>>> edge) {
-        edgeList.get(edge.getKey()).remove(edge.getValue());
+        for (int i = 0; i < edgeList.get(edge.getKey()).size(); i++) {
+            Pair<Symbol, Edge<Length>> element = edgeList.get(edge.getKey()).get(i);
+            if (element.getKey().equals(edge.getValue().getKey())) {
+                edgeList.get(edge.getKey()).remove(i);
+                break;
+            }
+        }
     }
 
     private void setResiduals(LinkedList<Symbol> nodes, Length min) {

@@ -54,25 +54,25 @@ public class DisjointSet<T> {
        return size;
    }
 
-   public int findSet(int index) {
+   public int findSetByIndex(int index) {
        if (sets[index].parent != index) {
-           return findSet(sets[index].parent);
+           return findSetByIndex(sets[index].parent);
        }
        return sets[index].parent;
    }
 
    public int findSet(T type) {
        if (sets[map.get(type)].parent != map.get(type)) {
-           return findSet(sets[map.get(type)].parent);
+           return findSetByIndex(sets[map.get(type)].parent);
        }
        return sets[map.get(type)].parent;
    }
 
-   public void union(int index1, int index2) {
+   public void unionByIndex(int index1, int index2) {
        int x;
        int y;
-       x = findSet(index1);
-       y = findSet(index2);
+       x = findSetByIndex(index1);
+       y = findSetByIndex(index2);
        if (sets[x].depth < sets[y].depth) {
            sets[x].parent = y;
        } else {
