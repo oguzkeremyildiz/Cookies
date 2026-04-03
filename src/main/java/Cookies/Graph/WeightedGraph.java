@@ -41,10 +41,6 @@ public class WeightedGraph<Symbol, Length> {
         return edgeList.containsKey(element);
     }
 
-    public boolean containsValue(LinkedList<Pair<Symbol, Length>> list) {
-        return edgeList.containsValue(list);
-    }
-
     public boolean contains(Symbol element) {
         return vertexList.contains(element);
     }
@@ -146,12 +142,12 @@ public class WeightedGraph<Symbol, Length> {
         return map;
     }
 
-    public LinkedList<LinkedList<Length>> floydWarshall() {
-        LinkedList<LinkedList<Length>> array = new LinkedList<>();
+    public ArrayList<ArrayList<Length>> floydWarshall() {
+        ArrayList<ArrayList<Length>> array = new ArrayList<>();
         for (int j = 0; j < vertexList.size(); j++) {
-            array.add(new LinkedList<>());
+            array.add(new ArrayList<>());
             for (int i = 0; i < vertexList.size(); i++) {
-                array.getLast().add(lengthInterface.min());
+                array.get(array.size() - 1).add(lengthInterface.min());
             }
         }
         Length current;
@@ -188,12 +184,12 @@ public class WeightedGraph<Symbol, Length> {
         return array;
     }
 
-    public Pair<HashMap<Integer, Symbol>, LinkedList<LinkedList<Length>>> floydWarshallWithKeys() {
-        LinkedList<LinkedList<Length>> array = new LinkedList<>();
+    public Pair<HashMap<Integer, Symbol>, ArrayList<ArrayList<Length>>> floydWarshallWithKeys() {
+        ArrayList<ArrayList<Length>> array = new ArrayList<>();
         for (int j = 0; j < vertexList.size(); j++) {
-            array.add(new LinkedList<>());
+            array.add(new ArrayList<>());
             for (int i = 0; i < vertexList.size(); i++) {
-                array.getLast().add(lengthInterface.min());
+                array.get(array.size() - 1).add(lengthInterface.min());
             }
         }
         Length current;
@@ -239,7 +235,7 @@ public class WeightedGraph<Symbol, Length> {
     }
 
     public void printAllShortestPath() {
-        Pair<HashMap<Integer, Symbol>, LinkedList<LinkedList<Length>>> pair;
+        Pair<HashMap<Integer, Symbol>, ArrayList<ArrayList<Length>>> pair;
         pair = this.floydWarshallWithKeys();
         for (int i = 0; i < pair.getValue().size(); i++) {
             for (int j = 0; j < pair.getValue().get(i).size(); j++) {
@@ -256,27 +252,29 @@ public class WeightedGraph<Symbol, Length> {
     }
 
     public Length prims() {
+        if (vertexList.isEmpty()) return lengthInterface.min();
         Length total = lengthInterface.min();
-        HashSet<Symbol> elements = new HashSet<>();
-        for (Symbol element : vertexList) {
-            elements.add(element);
-            break;
+        HashSet<Symbol> visited = new HashSet<>();
+        PriorityQueue<Triplet<Symbol, Symbol, Length>> pq = new PriorityQueue<>((a, b) -> lengthInterface.compare(a.getC(), b.getC()));
+        Symbol start = vertexList.iterator().next();
+        visited.add(start);
+        if (edgeList.containsKey(start)) {
+            for (Pair<Symbol, Edge<Length>> edge : edgeList.get(start)) {
+                pq.add(new Triplet<>(start, edge.getKey(), edge.getValue().getLength()));
+            }
         }
-        while (!elements.containsAll(vertexList)) {
-            Symbol edge = null;
-            Length minimum = lengthInterface.max();
-            for (Symbol element : elements) {
-                for (int i = 0; i < get(element).size(); i++) {
-                    Pair<Symbol, Edge<Length>> pair = get(element, i);
-                    if (!elements.contains(pair.getKey()) && lengthInterface.compare(pair.getValue().getLength(), minimum) < 0) {
-                        minimum = pair.getValue().getLength();
-                        edge = pair.getKey();
+        while (!pq.isEmpty() && visited.size() < vertexList.size()) {
+            Triplet<Symbol, Symbol, Length> edge = pq.poll();
+            if (!visited.contains(edge.getB())) {
+                visited.add(edge.getB());
+                total = lengthInterface.add(total, edge.getC());
+                if (edgeList.containsKey(edge.getB())) {
+                    for (Pair<Symbol, Edge<Length>> nextEdge : edgeList.get(edge.getB())) {
+                        if (!visited.contains(nextEdge.getKey())) {
+                            pq.add(new Triplet<>(edge.getB(), nextEdge.getKey(), nextEdge.getValue().getLength()));
+                        }
                     }
                 }
-            }
-            if (edge != null) {
-                elements.add(edge);
-                total = lengthInterface.add(total, minimum);
             }
         }
         return total;
@@ -284,91 +282,55 @@ public class WeightedGraph<Symbol, Length> {
 
     public Length kruskal() {
         Length total = lengthInterface.min();
-        LinkedList<Triplet<Symbol, Symbol, Length>> list = new LinkedList<>();
-        Symbol[] nodes = (Symbol[]) new Object[vertexList.size()];
-        int j = -1;
-        for (Symbol element : vertexList) {
-            j++;
-            nodes[j] = element;
-        }
+        List<Triplet<Symbol, Symbol, Length>> allEdges = new ArrayList<>();
+        Symbol[] nodes = (Symbol[]) java.lang.reflect.Array.newInstance(vertexList.iterator().next().getClass(), vertexList.size());
+        int idx = 0;
+        for (Symbol s : vertexList) nodes[idx++] = s;
         DisjointSet<Symbol> set = new DisjointSet<>(nodes);
-        for (Symbol key : edgeList.keySet()) {
-            for (int i = 0; i < edgeList.get(key).size(); i++) {
-                if (!list.contains(new Triplet<>(edgeList.get(key).get(i).getKey(), key, edgeList.get(key).get(i).getValue().getLength()))) {
-                    list.add(new Triplet<>(key, edgeList.get(key).get(i).getKey(), edgeList.get(key).get(i).getValue().getLength()));
-                }
+        for (Symbol u : edgeList.keySet()) {
+            for (Pair<Symbol, Edge<Length>> pair : edgeList.get(u)) {
+                allEdges.add(new Triplet<>(u, pair.getKey(), pair.getValue().getLength()));
             }
         }
-        sort(list);
-        for (Triplet<Symbol, Symbol, Length> tripletElement : list) {
-            if (set.findSet(tripletElement.getA()) != set.findSet(tripletElement.getB())) {
-                set.union(tripletElement.getA(), tripletElement.getB());
-                total = lengthInterface.add(total, tripletElement.getC());
+        allEdges.sort((a, b) -> lengthInterface.compare(a.getC(), b.getC()));
+        for (Triplet<Symbol, Symbol, Length> edge : allEdges) {
+            if (set.findSet(edge.getA()) != set.findSet(edge.getB())) {
+                set.union(edge.getA(), edge.getB());
+                total = lengthInterface.add(total, edge.getC());
             }
         }
         return total;
     }
 
-    private void sort(LinkedList<Triplet<Symbol, Symbol, Length>> list) {
-        for (int i = 0; i < list.size(); i++) {
-            for (int j = 0; j < list.size(); j++) {
-                if (lengthInterface.compare(list.get(i).getC(), list.get(j).getC()) < 0) {
-                    Triplet<Symbol, Symbol, Length> tmp = list.get(i);
-                    list.set(i, list.get(j));
-                    list.set(j, tmp);
-                }
-            }
-        }
-    }
-
-    public HashMap<Symbol, Pair<Length, Symbol>> dijkstra(Symbol edge) {
+    public HashMap<Symbol, Pair<Length, Symbol>> dijkstra(Symbol source) {
+        HashMap<Symbol, Pair<Length, Symbol>> results = new HashMap<>();
         HashSet<Symbol> visited = new HashSet<>();
-        HashMap<Symbol, Pair<Length, Symbol>> map = new HashMap<>();
-        visited.add(edge);
-        for (Symbol element : vertexList) {
-            if (edge.equals(element)) {
-                map.put(element, new Pair<>(lengthInterface.min(), edge));
-            } else if (containsElement(edge, element).getKey()) {
-                map.put(element, new Pair<>(get(edge, containsElement(edge, element).getValue()).getValue().getLength(), edge));
-            } else {
-                map.put(element, new Pair<>(lengthInterface.max(), null));
-            }
+        PriorityQueue<Pair<Symbol, Length>> pq = new PriorityQueue<>((a, b) -> lengthInterface.compare(a.getValue(), b.getValue()));
+        for (Symbol v : vertexList) {
+            results.put(v, new Pair<>(lengthInterface.max(), null));
         }
-        for (int i = 0; i < vertexList.size() - 1; i++) {
-            Symbol key = findMinimum(visited, map);
-            visited.add(key);
-            if (containsKey(key)) {
-                for (int j = 0; j < get(key).size(); j++) {
-                    if (lengthInterface.compare(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getLength()), map.get(get(key, j).getKey()).getKey()) < 0) {
-                        map.put(get(key, j).getKey(), new Pair<>(lengthInterface.add(map.get(key).getKey(), get(key, j).getValue().getLength()), key));
+        results.put(source, new Pair<>(lengthInterface.min(), source));
+        pq.add(new Pair<>(source, lengthInterface.min()));
+        while (!pq.isEmpty()) {
+            Pair<Symbol, Length> current = pq.poll();
+            Symbol u = current.getKey();
+            Length distToU = current.getValue();
+            if (!visited.contains(u)) {
+                visited.add(u);
+                if (edgeList.containsKey(u)) {
+                    for (Pair<Symbol, Edge<Length>> edge : edgeList.get(u)) {
+                        Symbol v = edge.getKey();
+                        Length weight = edge.getValue().getLength();
+                        Length newDist = lengthInterface.add(distToU, weight);
+                        if (lengthInterface.compare(newDist, results.get(v).getKey()) < 0) {
+                            results.put(v, new Pair<>(newDist, u));
+                            pq.add(new Pair<>(v, newDist));
+                        }
                     }
                 }
             }
         }
-        return map;
-    }
-
-    private Symbol findMinimum(HashSet<Symbol> visited, HashMap<Symbol, Pair<Length, Symbol>> map) {
-        Symbol element = null;
-        Length length = lengthInterface.max();
-        for (Symbol key : map.keySet()) {
-            if (!visited.contains(key)) {
-                if (lengthInterface.compare(length, map.get(key).getKey()) > 0) {
-                    length = map.get(key).getKey();
-                    element = key;
-                }
-            }
-        }
-        return element;
-    }
-
-    private Pair<Boolean, Integer> containsElement(Symbol edge, Symbol element) {
-        for (int i = 0; i < get(edge).size(); i++) {
-            if (get(edge, i).getKey().equals(element)) {
-                return new Pair<>(true, i);
-            }
-        }
-        return new Pair<>(false, -1);
+        return results;
     }
 
     public void printShortestPathDijkstra(Symbol key) {
